@@ -6,11 +6,11 @@ const capitalizeCheck = (value) => {
     return first.toUpperCase() + (tail ? tail.join('').toLowerCase() : tail.join(''))
 }
 
-const getSolidIcon = (name) => {
-    for (let key of Object.keys(SolidIcon)) {
+const getIconFromLib = (name, IconLib) => {
+    for (let key of Object.keys(IconLib)) {
         const keyCapitalize = 'fa' + capitalizeCheck(key.replace('fa', ''))
         const soughtName = 'fa' + capitalizeCheck(name)
-        if(keyCapitalize.includes(soughtName)) return SolidIcon[key]
+        if(keyCapitalize.includes(soughtName)) return IconLib[key]
     }
     return null
 }
@@ -67,24 +67,15 @@ const solidIconKey = (value) => {
     return ''
 }
 
-const getBrandIcon = (name) => {
-    for (let key of Object.keys(BrandIcon)) {
-        const keyCapitalize = 'fa' + capitalizeCheck(key.replace('fa', ''))
-        const soughtName = 'fa' + capitalizeCheck(name)
-        if(keyCapitalize.includes(soughtName)) return BrandIcon[key]
-    }
-    return null
-}
-
 export const findProfileIcon = (name) => {
     const DEFAULT_ICON = SolidIcon.faLink
     if(name === null || name === '' || name.trim() === '') return DEFAULT_ICON
 
     const brandKey = brandIconKey(name)
-    if(brandKey) return getBrandIcon(brandKey)
+    if(brandKey) return getIconFromLib(brandKey, BrandIcon)
 
     const solidKey = solidIconKey(name)
-    if(solidKey) return getSolidIcon(solidKey)
+    if(solidKey) return getIconFromLib(solidKey, SolidIcon)
 
     return DEFAULT_ICON
 }
