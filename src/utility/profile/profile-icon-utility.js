@@ -37,12 +37,12 @@ const findProfileIconKeyForUrl = (url) => {
     return profileIcon.findProfileIconKey(urlScrubbed)
 }
 
-export const findProfileIconKeyForTitle = (title) => {
-    return findProfileIconHint(title) || profileIcon.findProfileIconKey(title) || ''
-}
-
 export const profileIconFromUrl = url => {
     return findProfileIconHint(url) || findProfileIconKeyForUrl(url) || ''
+}
+
+export const findProfileIconKeyForTitle = (title) => {
+    return findProfileIconHint(title) || profileIcon.findProfileIconKey(title) || ''
 }
 
 export const sortProfilesById = function(a, b) {

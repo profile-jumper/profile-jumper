@@ -15,22 +15,20 @@ const getIconFromLib = (name, IconLib) => {
 const findIconKeyPossibleMatches = (value, IconLib, ignore) => {
     let matches = []
     for (let key of Object.keys(IconLib)) {
-        if (key.toLowerCase() === ignore) continue //lower level internals we don't want
+        if (key.toLowerCase() === (ignore || 'prefix')) continue //lower level internals we don't want
         const keyWithoutPrefix = key.replace('fa', '')
         if(value.toLowerCase().includes(keyWithoutPrefix.toLowerCase())) matches.push(keyWithoutPrefix)
     }
     return matches
 }
 
-const sortValuesByLength = function(a, b) {
-    return b.length - a.length
-}
+const sortValuesByLongestLength = (a, b) => b.length - a.length
 
 const findIconKey = (value, IconLib, ignore) => {
     const matches = findIconKeyPossibleMatches(value, IconLib, ignore)
     if(matches.length === 1) return matches[0]
     if(matches.length > 1) {
-        matches.sort(sortValuesByLength)
+        matches.sort(sortValuesByLongestLength)
         for (let matchResult of matches) {
             if(value.toLowerCase() === matchResult.toLowerCase()) return matchResult
             if(value.toLowerCase().includes(matchResult.toLowerCase())) return matchResult
@@ -43,17 +41,17 @@ export const findProfileIcon = (name) => {
     const DEFAULT_ICON = SolidIcon.faLink
     if(name === null || name === '' || name.trim() === '') return DEFAULT_ICON
 
-    const brandKey = findIconKey(name, BrandIcon, 'fab' || 'prefix')
+    const brandKey = findIconKey(name, BrandIcon, 'fab')
     if(brandKey) return getIconFromLib(brandKey, BrandIcon)
 
-    const solidKey = findIconKey(name, SolidIcon, 'fas' || 'prefix')
+    const solidKey = findIconKey(name, SolidIcon, 'fas')
     if(solidKey) return getIconFromLib(solidKey, SolidIcon)
 
     return DEFAULT_ICON
 }
 
 export const findProfileIconKey = (value) => {
-    return findIconKey(value, BrandIcon, 'fab' || 'prefix') || findIconKey(value, SolidIcon, 'fas' || 'prefix') || ''
+    return findIconKey(value, BrandIcon, 'fab') || findIconKey(value, SolidIcon, 'fas') || ''
 }
 
 export const smallIconSize = '2x'
