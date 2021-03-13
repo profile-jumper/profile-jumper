@@ -28,8 +28,8 @@ const findIconKey = (value, IconLib, ignore) => {
     const matches = findIconKeyPossibleMatches(value, IconLib, ignore)
     if(matches.length === 1) return matches[0]
     if(matches.length > 1) {
-        matches.sort(sortValuesByLongestLength)
-        for (let matchResult of matches) {
+        const sortedMatches = [...matches].sort(sortValuesByLongestLength)
+        for (let matchResult of sortedMatches) {
             if(value.toLowerCase() === matchResult.toLowerCase()) return matchResult
             if(value.toLowerCase().includes(matchResult.toLowerCase())) return matchResult
         }
