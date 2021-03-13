@@ -1,15 +1,12 @@
 import * as SolidIcon from '@fortawesome/free-solid-svg-icons'
 import * as BrandIcon from '@fortawesome/free-brands-svg-icons'
 
-const capitalizeCheck = (value) => {
-    const [first, ...tail] = value
-    return first.toUpperCase() + (tail ? tail.join('').toLowerCase() : tail.join(''))
-}
+import { capitalize } from '../string/string-utility'
 
 const getIconFromLib = (name, IconLib) => {
     for (let key of Object.keys(IconLib)) {
-        const keyCapitalize = 'fa' + capitalizeCheck(key.replace('fa', ''))
-        const soughtName = 'fa' + capitalizeCheck(name)
+        const keyCapitalize = 'fa' + capitalize(key.replace('fa', ''))
+        const soughtName = 'fa' + capitalize(name)
         if(keyCapitalize.includes(soughtName)) return IconLib[key]
     }
     return null
