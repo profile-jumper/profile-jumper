@@ -12,22 +12,10 @@ const getIconFromLib = (name, IconLib) => {
     return null
 }
 
-const findIncludeBrandMatches = (value) => {
+const findIconKeyPossibleMatches = (value, IconLib, ignore) => {
     let matches = []
-    for (let key of Object.keys(BrandIcon)) {
-        //todo: refactor (notice faB)
-        if (key.toLowerCase() === ('fab' || 'prefix')) continue //lower level internals we don't want
-        const keyWithoutPrefix = key.replace('fa', '')
-        if(value.toLowerCase().includes(keyWithoutPrefix.toLowerCase())) matches.push(keyWithoutPrefix)
-    }
-    return matches
-}
-
-const findIncludeSolidMatches = (value) => {
-    let matches = []
-    for (let key of Object.keys(SolidIcon)) {
-        //todo: refactor (notice faB)
-        if (key.toLowerCase() === ('fas' || 'prefix')) continue //lower level internals we don't want
+    for (let key of Object.keys(IconLib)) {
+        if (key.toLowerCase() === ignore) continue //lower level internals we don't want
         const keyWithoutPrefix = key.replace('fa', '')
         if(value.toLowerCase().includes(keyWithoutPrefix.toLowerCase())) matches.push(keyWithoutPrefix)
     }
@@ -39,7 +27,7 @@ const sortValuesByLength = function(a, b) {
 }
 
 const brandIconKey = (value) => {
-    const matches = findIncludeBrandMatches(value)
+    const matches = findIconKeyPossibleMatches(value, BrandIcon, 'fab' || 'prefix')
     if(matches.length === 1) return matches[0]
     if(matches.length > 1) {
         matches.sort(sortValuesByLength)
@@ -52,7 +40,7 @@ const brandIconKey = (value) => {
 }
 
 const solidIconKey = (value) => {
-    const matches = findIncludeSolidMatches(value)
+    const matches = findIconKeyPossibleMatches(value, SolidIcon, 'fas' || 'prefix')
     if(matches.length === 1) return matches[0]
     if(matches.length > 1) {
         matches.sort(sortValuesByLength)
