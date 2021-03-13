@@ -45,6 +45,4 @@ export const findProfileIconKeyForTitle = (title) => {
     return findProfileIconHint(title) || profileIcon.findProfileIconKey(title) || ''
 }
 
-export const sortProfilesById = function(a, b) {
-    return a.id - b.id
-}
+export const sortProfilesById = (a, b) => a.id - b.id
