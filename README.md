@@ -64,8 +64,8 @@ Create the container using bash tool (will create Alpine Linux container by defa
 
 ### Running container
 The container needs to be executed as the user 1000 (contain it's a little different with Alpine)
-* `lxc.start.profile-jumper` or `lxc start profile-jumper` (the former is custom bash alias)
-* `lxc.in.profile-jumper` or `lxc exec profile-jumper --user 1000 bash` (the former is custom bash alias)
+* `profile-jumper.start.lxc` or `lxc start profile-jumper` (the former is custom bash alias)
+* `profile-jumper.run-in.lxc` or `lxc exec profile-jumper --user 1000 bash` (the former is custom bash alias)
 
 ## Dependencies
 
