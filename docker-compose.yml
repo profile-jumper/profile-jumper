@@ -12,5 +12,6 @@ services:
       - 3000:3000
     volumes:
       - ./src:/app/src
-    command: npm run start
-    stdin_open: true
+    command: ls -la
+    #command: npm run start
+    #stdin_open: true
