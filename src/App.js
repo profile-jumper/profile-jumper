@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import Popup from './layout/popup/Popup'
 import Settings from './layout/settings/Settings'
@@ -7,13 +7,11 @@ import Settings from './layout/settings/Settings'
 function App() {
   return (
     <React.Fragment>
-        <Switch>
-            <Route exact path="/">
-                <Redirect to="/popup"/>
-            </Route>
-            <Route path="/popup" component={Popup}/>
-            <Route path="/settings" component={Settings}/>
-        </Switch>
+        <Routes>
+            <Route path="/" element={<Navigate to="/popup" replace />}/>
+            <Route path="/popup" element={<Popup/>}/>
+            <Route path="/settings" element={<Settings/>}/>
+        </Routes>
     </React.Fragment>
   )
 }
