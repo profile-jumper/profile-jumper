@@ -1,12 +1,10 @@
 import React from 'react'
-import { HashRouter } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
 
-import { AppRoutes } from './route/AppRoutes'
+import { appRoutes } from './route/appRoutes'
 
 const App = () => (
-    <HashRouter>
-        <AppRoutes/>
-    </HashRouter>
+    <RouterProvider router={appRoutes} />
 )
 
 export default App
