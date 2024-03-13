@@ -6,8 +6,8 @@ import { SettingFooter } from '../../component/setting/setting-footer/SettingFoo
 
 import Profiles from '../../component/profiles/Profiles'
 
-import SettingsDataImport from '../../component/data/import/SettingsDataImport'
-import SettingsDataExport from '../../component/data/export/SettingsDataExport'
+//import SettingsDataImport from '../../component/data/import/SettingsDataImport'
+//import SettingsDataExport from '../../component/data/export/SettingsDataExport'
 
 import './Settings.css'
 
@@ -24,8 +24,10 @@ export const Settings = () => {
                         <Profiles/>
                     </div>
                     <div className="SettingsDataPanel">
+                        {/*
                         <SettingsDataImport/>
                         <SettingsDataExport/>
+                        */}
                     </div>
                 </div>
                 <div className="SettingsPannel">
