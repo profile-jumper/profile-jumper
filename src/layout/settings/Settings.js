@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import { SettingHeader } from '../../component/setting/setting-header/SettingHeader'
 import SettingProfiles from '../../component/setting/setting-profiles/SettingProfiles'
@@ -11,34 +11,30 @@ import SettingsDataExport from '../../component/data/export/SettingsDataExport'
 
 import './Settings.css'
 
-class Settings extends Component {
+export const Settings = () => {
 
-  render() {
     return (
-      <div className="Settings">
+        <div className="Settings">
 
-        <SettingHeader/>
+            <SettingHeader/>
 
-        <div className="SettingsConfig">
-          <div className="ProfilesPannelWapper">
-            <div className="ProfilesPannel">
-              <Profiles/>
+            <div className="SettingsConfig">
+                <div className="ProfilesPannelWapper">
+                    <div className="ProfilesPannel">
+                        <Profiles/>
+                    </div>
+                    <div className="SettingsDataPanel">
+                        <SettingsDataImport/>
+                        <SettingsDataExport/>
+                    </div>
+                </div>
+                <div className="SettingsPannel">
+                    <SettingProfiles/>
+                </div>
             </div>
-            <div className="SettingsDataPanel">
-              <SettingsDataImport/>
-              <SettingsDataExport/>
-            </div>
-          </div>
-          <div className="SettingsPannel">
-            <SettingProfiles/>
-          </div>
+
+            <SettingFooter/>
+
         </div>
-
-        <SettingFooter/>
-
-      </div>
     )
-  }
 }
-
-export default Settings
