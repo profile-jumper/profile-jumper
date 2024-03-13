@@ -2,21 +2,18 @@ import React from 'react'
 
 import './ProfileTitle.css'
 
-export const ProfileTitle = ({ register, error }) => {
-
-    const inputStyle = (error) ? 'error' : null
-
-    const errorShow = (error) ? <p className='error'>Enter a profile name</p> : null
+export const ProfileTitle = ({ register, errors }) => {
+    const inputStyle = (errors.profileTitle) ? 'error' : null
+    const errorShow = (errors.profileTitle) ? <p className='error'>{errors.profileTitle?.message}</p> : null
 
     return (
         <div className='ProfileTitle'>
+            {errorShow}
             <input type='text'
-                   name='profileTitle'
                    autoComplete='off'
                    className={inputStyle}
-                   {...register('profileTitle', {required: true, minLength: 2})}
+                   {...register('profileTitle', {required: 'Enter a profile name'} )}
             />
-            {errorShow}
         </div>
     )
 }

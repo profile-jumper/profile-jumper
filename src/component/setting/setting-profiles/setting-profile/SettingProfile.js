@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import ProfileHandle from './profile-handle/ProfileHandle'
-import ProfileUrl from './profile-url/ProfileUrl'
+import { ProfileUrl } from './profile-url/ProfileUrl'
 import { ProfileTitle } from './profile-title/ProfileTitle'
 import { ProfileIcon } from './profile-icon/ProfileIcon'
 import ProfileAdd from './profile-add/ProfileAdd'
@@ -128,7 +128,8 @@ export const SettingProfile = () => {
                             value={profileUrl.value} {...(this.props.updateHandler && {updateExisting: this.profileUpdateHandler})} />
                 */}
 
-                <ProfileTitle register={register} error={errors.profileTitle} />
+                <ProfileUrl/>
+                <ProfileTitle register={register} errors={errors} />
                 <ProfileIcon icon={profileIconName}/>
 
             {/*
