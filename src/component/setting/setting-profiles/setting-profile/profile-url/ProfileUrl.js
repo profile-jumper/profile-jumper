@@ -4,7 +4,7 @@ import { checkValidity } from '../../../utility/inputValidation'
 
 import './ProfileUrl.css'
 
-export const ProfileUrl = () => {
+export const ProfileUrl = ({ register, errors }) => {
 
   // constructor(props) {
   //   super(props)

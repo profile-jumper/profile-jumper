@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 
 import ProfileHandle from './profile-handle/ProfileHandle'
 import { ProfileUrl } from './profile-url/ProfileUrl'
-import { ProfileTitle } from './profile-title/ProfileTitle'
+import { PROFILE_TITLE, ProfileTitle } from './profile-title/ProfileTitle'
 import { ProfileIcon } from './profile-icon/ProfileIcon'
 import ProfileAdd from './profile-add/ProfileAdd'
 import ProfileRemove from './profile-remove/ProfileRemove'
@@ -20,7 +20,7 @@ export const SettingProfile = () => {
 
     useEffect(() => {
         const subscription = watch((formValue, { name, type }) => {
-            if(name === 'profileTitle') {
+            if(name === PROFILE_TITLE) {
                 const value = formValue[name]
                 setProfileIconName(value)
             }

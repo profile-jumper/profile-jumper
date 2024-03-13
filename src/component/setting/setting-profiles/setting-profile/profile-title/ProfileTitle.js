@@ -2,9 +2,11 @@ import React from 'react'
 
 import './ProfileTitle.css'
 
+export const PROFILE_TITLE = 'profileTitle'
+
 export const ProfileTitle = ({ register, errors }) => {
-    const inputStyle = (errors.profileTitle) ? 'error' : null
-    const errorShow = (errors.profileTitle) ? <p className='error'>{errors.profileTitle?.message}</p> : null
+    const inputStyle = (errors[PROFILE_TITLE]) ? 'error' : null
+    const errorShow = (errors[PROFILE_TITLE]) ? <p className='error'>{errors[PROFILE_TITLE]?.message}</p> : null
 
     return (
         <div className='ProfileTitle'>
@@ -12,7 +14,7 @@ export const ProfileTitle = ({ register, errors }) => {
             <input type='text'
                    autoComplete='off'
                    className={inputStyle}
-                   {...register('profileTitle', {required: 'Enter a profile name'} )}
+                   {...register(PROFILE_TITLE, {required: 'Enter an icon e.g. "Star" to override your link'} )}
             />
         </div>
     )
