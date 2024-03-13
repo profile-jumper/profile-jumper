@@ -34,8 +34,8 @@ export const ProfileUrl = ({register, errors}) => {
                    autoComplete="off"
                    className={inputStyle}
                    {...register(PROFILE_URL, {
-                       required: 'Enter link URL e.g. https://instagram.com/mrupgradable',
-                       minLength: {value: 5, message: 'URL Link is too short, finish entering it'}
+                       required: 'Enter or paste link URL e.g. https://instagram.com/mrupgradable',
+                       minLength: {value: 5, message: 'URL Link is too short, enter or paste it here'}
                    })}
             />
         </div>
