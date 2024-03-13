@@ -12,9 +12,12 @@ export const ProfileTitle = ({ register, errors }) => {
         <div className='ProfileTitle'>
             {errorShow}
             <input type='text'
+                   placeholder="Icon e.g. Star"
                    autoComplete='off'
                    className={inputStyle}
-                   {...register(PROFILE_TITLE, {required: 'Enter an icon e.g. "Star" to override your link'} )}
+                   {...register(PROFILE_TITLE, {
+                       required: 'Enter an icon e.g. "Star" to override your link icon'
+                   } )}
             />
         </div>
     )

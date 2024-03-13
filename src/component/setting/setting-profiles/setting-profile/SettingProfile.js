@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import ProfileHandle from './profile-handle/ProfileHandle'
-import { ProfileUrl } from './profile-url/ProfileUrl'
+import { PROFILE_URL, ProfileUrl } from './profile-url/ProfileUrl'
 import { PROFILE_TITLE, ProfileTitle } from './profile-title/ProfileTitle'
 import { ProfileIcon } from './profile-icon/ProfileIcon'
-import ProfileAdd from './profile-add/ProfileAdd'
-import ProfileRemove from './profile-remove/ProfileRemove'
 import * as profileIconUtility from '../../../../utility/profile/profile-icon-utility'
 
 import './SettingProfile.css'
@@ -14,72 +11,27 @@ import './SettingProfile.css'
 export const SettingProfile = () => {
     const [profileIconName, setProfileIconName] = useState('')
 
-    const { register, watch, formState: { errors } } = useForm({
+    const {register, watch, formState: {errors}} = useForm({
         mode: 'onChange'
     })
 
     useEffect(() => {
-        const subscription = watch((formValue, { name, type }) => {
-            if(name === PROFILE_TITLE) {
-                const value = formValue[name]
-                setProfileIconName(value)
+        const subscription = watch((formValue, {name, type}) => {
+            const inputValue = (formValue && formValue[name]) ? formValue[name] : ''
+            if (name === PROFILE_URL) {
+                const profileIconUrlHint = profileIconUtility.profileIconFromUrl(inputValue)
+                setProfileIconName(profileIconUrlHint)
+            }
+            if (name === PROFILE_TITLE) {
+                // todo: look into profileIconUtility.findProfileIconKeyForTitle()
+                setProfileIconName(inputValue)
             }
         })
         return () => subscription.unsubscribe()
     }, [watch])
 
-    //todo: refactor this!
-    // updateInput = (inputRef, value, valid) => {
-    //     let inputs = {...this.state.inputs}
-    //
-    //     const effectedInput = inputs[inputRef]
-    //     effectedInput.value = value
-    //     effectedInput.isValid = valid
-    //
-    //     inputs[inputRef] = effectedInput
-    //
-    //     if (inputRef === 'profileUrl') {
-    //         const profileUrl = this.state.inputs['profileUrl']
-    //
-    //         if (profileUrl.isValid) {
-    //             const profileIconKey = profileIconUtility.profileIconFromUrl(profileUrl.value)
-    //
-    //             if (profileIconKey) {
-    //                 const profileIcon = inputs['profileIcon']
-    //                 profileIcon.value = profileIconKey
-    //                 inputs['profileIcon'] = profileIcon
-    //
-    //                 const profileTitle = inputs['profileTitle']
-    //                 profileTitle.value = profileIconKey
-    //                 inputs['profileTitle'] = profileTitle
-    //             }
-    //         } else {
-    //             const profileIcon = inputs['profileIcon']
-    //             profileIcon.value = ''
-    //             inputs['profileIcon'] = profileIcon
-    //
-    //             const profileTitle = inputs['profileTitle']
-    //             profileTitle.value = ''
-    //             inputs['profileTitle'] = profileTitle
-    //         }
-    //     }
-    //
-    //     if (inputRef === 'profileTitle') {
-    //         const profileTitle = this.state.inputs['profileTitle']
-    //
-    //         if (profileTitle.isValid) {
-    //             const iconKey = profileIconUtility.findProfileIconKeyForTitle(profileTitle.value)
-    //
-    //             const profileIcon = inputs['profileIcon']
-    //             profileIcon.value = iconKey
-    //             inputs['profileIcon'] = profileIcon
-    //         }
-    //     }
 
-        // const areAllValid = this.isAllInputValid()
-        //
-        // this.setState({...this.state, inputs: inputs, valid: areAllValid})
-    //}
+    // const areAllValid = this.isAllInputValid()
 
     // todo: need state add mechanics
     // profileAddHandler = () => {
@@ -121,21 +73,17 @@ export const SettingProfile = () => {
         */
 
         <div>
-
-                {/*
+            {/*
                 <ProfileHandle showHandle={!this.props.noDragHandle}/>
-                <ProfileUrl updateValue={(value, validity) => this.updateInput('profileUrl', value, validity)}
-                            value={profileUrl.value} {...(this.props.updateHandler && {updateExisting: this.profileUpdateHandler})} />
                 */}
 
-                <ProfileUrl/>
-                <ProfileTitle register={register} errors={errors} />
-                <ProfileIcon icon={profileIconName}/>
+            <ProfileUrl register={register} errors={errors}/>
+            <ProfileTitle register={register} errors={errors}/>
+            <ProfileIcon icon={profileIconName}/>
 
             {/*
                 {profileAddButton}
                 {profileRemoveButton}
-
             */}
         </div>
     )
