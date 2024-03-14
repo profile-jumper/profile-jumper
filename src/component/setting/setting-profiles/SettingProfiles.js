@@ -1,14 +1,12 @@
 import React from 'react'
 
-import * as profileActions from '../../../store/profile/action'
 import { SettingProfile } from './setting-profile/SettingProfile'
 import { insertAfter, insertBefore, obtainNearestParentForClassName } from '../../../utility/native-dom/nativeDomUtility'
-
-import './SettingProfiles.css'
 import { useProfiles, useSetProfiles } from '../../../data/provider/jotai-provider'
 
-//import * as ProfileService from '../../../data/service/profile-service'
+import './SettingProfiles.css'
 
+// todo: need to review this 'drag'
 const placeholder = document.createElement('div')
 placeholder.className = 'placeholder'
 placeholder.innerHTML = 'Move here...'
@@ -79,17 +77,13 @@ const SettingProfiles = () => {
             {/*))}*/}
             {/*<SettingProfile addHandler={this.props.onProfileAdd} primaryInput noDragHandle/>*/}
 
-            <SettingProfile onProfileCreate={onProfileCreate}/>
+            <SettingProfile onProfileCreate={onProfileCreate} primaryInput/>
 
         </div>
     )
 }
 
-// todo: handle from state (implement better)
-// const mapStateToProps = centralStoreState => {
-//     return {profiles: centralStoreState.profileStore.profiles}
-// }
-//
+// todo: double check
 // const mapDispatcherToProps = (dispatch) => {
 //     return {
 //         onInitProfiles: () => dispatch(profileActions.retrieveFromPersistentProfilesAction()),
