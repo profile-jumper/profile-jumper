@@ -2,7 +2,6 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as SolidIcon from '@fortawesome/free-solid-svg-icons'
 
-import { sortProfilesById } from '../../utility/profile/profile-icon-utility'
 import { useProfiles } from '../../data/provider/jotai-provider'
 import { Profile } from './profile/Profile'
 
