@@ -62,21 +62,19 @@ export const SettingProfiles = () => {
         /*<div className="SettingsProfilesContainer" onDragOver={dragOver.bind(this)}>*/
 
         <div className="SettingsProfilesContainer">
-            {/*{settingProfiles.map(settingProfile => (*/}
-            {/*    <SettingProfile*/}
-            {/*        key={settingProfile.id}*/}
-            {/*        id={settingProfile.id}*/}
-            {/*        url={settingProfile.url}*/}
-            {/*        title={settingProfile.title}*/}
-            {/*        icon={settingProfile.icon}*/}
-            {/*        updateHandler={this.props.onProfileUpdate}*/}
-            {/*        removeHandler={() => this.props.onProfileRemove(settingProfile.id)}*/}
-            {/*        dragStart={dragStart}*/}
-            {/*        dragEnd={dragEnd}*/}
-            {/*    />*/}
-            {/*))}*/}
-            {/*<SettingProfile addHandler={this.props.onProfileAdd} primaryInput noDragHandle/>*/}
+            {profiles.map(settingProfile => (
+                <SettingProfile
+                    key={settingProfile.id}
+                    id={settingProfile.id}
+                    profile={settingProfile}
+                    // updateHandler={this.props.onProfileUpdate}
+                    // removeHandler={() => this.props.onProfileRemove(settingProfile.id)}
+                    // dragStart={dragStart}
+                    // dragEnd={dragEnd}
+                />
+            ))}
 
+            {/*<SettingProfile addHandler={this.props.onProfileAdd} primaryInput noDragHandle/>*/}
             <SettingProfile onProfileCreate={onProfileCreate} primaryInput/>
 
         </div>

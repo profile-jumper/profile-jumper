@@ -12,11 +12,18 @@ import { generateUniqueId } from '../../../../utility/identifier/id-utility'
 
 import './SettingProfile.css'
 
-export const SettingProfile = ({ id, onProfileCreate, onProfileRemove, primaryInput }) => {
-    const [profileIconName, setProfileIconName] = useState('')
+export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, primaryInput }) => {
+    const [profileIconName, setProfileIconName] = useState(profile?.icon || '')
 
-    const { register, watch, formState: { errors }, handleSubmit } = useForm({
-        mode: 'onChange'
+    console.log('profile', profile)
+
+    const { register, watch, reset, formState: { errors, isSubmitSuccessful }, handleSubmit } = useForm({
+        mode: 'onChange',
+        defaultValues: {
+            id: profile?.id,
+            profileUrl: profile?.url,
+            profileTitle: profile?.title
+        }
     })
 
     useEffect(() => {
@@ -35,7 +42,6 @@ export const SettingProfile = ({ id, onProfileCreate, onProfileRemove, primaryIn
         return () => subscription.unsubscribe()
     }, [watch])
 
-
     // will be valid 1st time round (onProfileAddHandler -> handleSubmit will re-validate)
     const isValid = isEntityEmpty(errors)
 
@@ -47,15 +53,24 @@ export const SettingProfile = ({ id, onProfileCreate, onProfileRemove, primaryIn
         let profile = mapValuesToProfile(data)
         onProfileCreate?.(profile)
         // todo: might need to reuse submission mechanics -> delegate to "handler" e.g. onProfileUpdate
+        resetForm()
+    }
+
+    const resetForm = () => {
+        // todo: need mapper
+        reset({
+            id: '',
+            profileUrl: '',
+            profileTitle: ''
+        })
+        setProfileIconName('')
+        console.log('HUGE reset!')
     }
 
     const mapValuesToProfile = (data) => {
         const id = data.id || generateUniqueId()
-        // todo: icon should be actual icon (de-coupling from icon lib?!)
         return { id: id, url: data.profileUrl, title: data.profileTitle, icon: profileIconName }
     }
-
-    const inputGroupId = (primaryInput) ? {} : {id: id}
 
     let className = 'SettingProfile'
     if (primaryInput) className += ' PrimaryInput'
@@ -67,7 +82,7 @@ export const SettingProfile = ({ id, onProfileCreate, onProfileRemove, primaryIn
         <div {...idProperties} className={className} {...draggableOptions}>
         */
 
-        <div {...inputGroupId} className={className}>
+        <div className={className}>
             {/*
             <ProfileHandle showHandle={!this.props.noDragHandle}/>
             */ }
