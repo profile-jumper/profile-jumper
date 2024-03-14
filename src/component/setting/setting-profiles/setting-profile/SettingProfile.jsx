@@ -15,10 +15,9 @@ import './SettingProfile.css'
 export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, primaryInput }) => {
     const [profileIconName, setProfileIconName] = useState(profile?.icon || '')
 
-    console.log('profile', profile)
-
-    const { register, watch, reset, formState: { errors, isSubmitSuccessful }, handleSubmit } = useForm({
+    const { register, watch, reset, formState: { errors }, handleSubmit } = useForm({
         mode: 'onChange',
+        // todo: need mapper
         defaultValues: {
             id: profile?.id,
             profileUrl: profile?.url,
@@ -69,6 +68,7 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, prim
 
     const mapValuesToProfile = (data) => {
         const id = data.id || generateUniqueId()
+        // todo: need mapper
         return { id: id, url: data.profileUrl, title: data.profileTitle, icon: profileIconName }
     }
 

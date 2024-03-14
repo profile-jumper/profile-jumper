@@ -58,6 +58,12 @@ export const SettingProfiles = () => {
         setProfiles([...profiles, profile])
     }
 
+    const onProfileDelete = (id) => {
+        // todo: ordering could be screwed
+        const profilesWithoutDeleted = profiles.filter(profile => profile.id !== id)
+        setProfiles(profilesWithoutDeleted)
+    }
+
     return (
         /*<div className="SettingsProfilesContainer" onDragOver={dragOver.bind(this)}>*/
 
@@ -68,7 +74,7 @@ export const SettingProfiles = () => {
                     id={settingProfile.id}
                     profile={settingProfile}
                     // updateHandler={this.props.onProfileUpdate}
-                    // removeHandler={() => this.props.onProfileRemove(settingProfile.id)}
+                    onProfileRemove={() => onProfileDelete(settingProfile.id)}
                     // dragStart={dragStart}
                     // dragEnd={dragEnd}
                 />
