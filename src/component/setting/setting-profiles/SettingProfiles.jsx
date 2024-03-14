@@ -11,7 +11,7 @@ const placeholder = document.createElement('div')
 placeholder.className = 'placeholder'
 placeholder.innerHTML = 'Move here...'
 
-const SettingProfiles = () => {
+export const SettingProfiles = () => {
     const profiles = useProfiles()
     const setProfiles = useSetProfiles()
 
@@ -93,5 +93,3 @@ const SettingProfiles = () => {
 //         onProfileReorder: (id, beforeId) => dispatch(profileActions.reOrderProfileAndPersistAction(id, beforeId))
 //     }
 // }
-
-export default SettingProfiles

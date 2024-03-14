@@ -8,9 +8,9 @@ import * as profileIconUtility from '../../../../utility/profile/profile-icon-ut
 import { ProfileAdd } from './profile-add/ProfileAdd'
 import { ProfileRemove } from './profile-remove/ProfileRemove'
 import { isEntityEmpty } from '../../../../utility/entity/entity-utility'
+import { generateUniqueId } from '../../../../utility/identifier/id-utility'
 
 import './SettingProfile.css'
-import { generateUniqueId } from '../../../../utility/identifier/id-utility'
 
 export const SettingProfile = ({ id, onProfileCreate, onProfileRemove, primaryInput }) => {
     const [profileIconName, setProfileIconName] = useState('')
