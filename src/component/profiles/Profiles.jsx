@@ -27,8 +27,7 @@ export const Profiles = () => {
     if (profiles && profiles.length > 0) {
         profilesListed = (
             <div className="Profiles">
-                {/* todo: should sort by index */}
-                { profiles.sort(sortProfilesById).map(profile => (
+                { profiles.map(profile => (
                     <Profile key={ profile.id } id={ profile.id } icon={ profile.icon } url={ profile.url }/>
                 )) }
             </div>
