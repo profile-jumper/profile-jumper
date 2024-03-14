@@ -1,17 +1,13 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { RouterProvider } from 'react-router-dom'
-import { createStore } from 'jotai'
 
 import { appRoutes } from './route/appRoutes'
-import { AppContext } from './data/repository/provider/jotai-provider'
+import { DataContextProvider } from './context/DataContextProvider'
 
-const App = () => {
-    const appStore = useRef(createStore())
-    return (
-        <AppContext.Provider value={ appStore.current }>
-            <RouterProvider router={ appRoutes }/>
-        </AppContext.Provider>
-    )
-}
+const App = () => (
+    <DataContextProvider>
+        <RouterProvider router={ appRoutes }/>
+    </DataContextProvider>
+)
 
 export default App
