@@ -1,9 +1,10 @@
 import React from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { SettingProfile } from '../setting-profile/SettingProfile'
-import { useProfiles, useSetProfiles } from '../../../../data/provider/jotai-provider'
 
-export const OrderedSettingProfiles = () => {
+import { useProfiles, useSetProfiles } from '../../../../data/provider/jotai-provider'
+import { SettingProfile } from '../setting-profile/SettingProfile'
+
+export const OrderedSettingProfiles = ({ onProfileUpdate, onProfileDelete }) => {
     const profiles = useProfiles()
     const setProfiles = useSetProfiles()
 
@@ -42,6 +43,8 @@ export const OrderedSettingProfiles = () => {
                             id={ profile.id }
                             index={ index }
                             profile={ profile }
+                            onProfileUpdate={ onProfileUpdate }
+                            onProfileRemove={ () => onProfileDelete(profile.id) }
                         />
                     </div>
                 ) }

@@ -32,6 +32,7 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
             }
             if (name === PROFILE_TITLE) {
                 const profileIconTitleHint = profileIconUtility.findProfileIconKeyForTitle(inputValue)
+                // todo: race condition (probably for url too)
                 setEditProfileData({ ...editProfileData, profileTitle: inputValue, profileIcon: profileIconTitleHint })
                 setUpdated(true)
             }
@@ -61,7 +62,7 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }
 
     const onSubmit = async (data) => {
-        let profile = mapValuesToProfile({ ...data, profileUrl: editProfileData.profileUrl })
+        let profile = mapValuesToProfile({...data, profileIcon: editProfileData.profileIcon})
         onProfileCreate?.(profile)
         resetForm()
     }
