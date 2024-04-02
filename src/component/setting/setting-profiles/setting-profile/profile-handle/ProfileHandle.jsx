@@ -5,13 +5,10 @@ import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 import './ProfileHandle.css'
 
-export const ProfileHandle = (props) => {
-
-    const profileHandleElement = (!props.showHandle) ? <div className="NoHandlePlaceHolder"></div> : <button><FontAwesomeIcon icon={ faBars }/></button>
-
+export const ProfileHandle = () => {
     return (
         <div className="ProfileHandle">
-            { profileHandleElement }
+            <button><FontAwesomeIcon icon={ faBars }/></button>
         </div>
     )
 }

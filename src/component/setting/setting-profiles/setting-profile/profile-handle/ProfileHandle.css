@@ -4,7 +4,7 @@
 }
 
 .ProfileHandle button {
-  background-color: #e3e3e3;
+  background-color: #d0d0d0;
   border: none;
   color: black;
   padding: 5px 10px;
@@ -18,9 +18,4 @@
 
 .ProfileHandle button:focus, button:focus{
     outline: none;
-}
-
-.NoHandlePlaceHolder {
-  background-color: #fff;
-  width: 40px;
 }
