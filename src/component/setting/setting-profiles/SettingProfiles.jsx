@@ -68,6 +68,7 @@ export const SettingProfiles = () => {
     }
 
     const onProfileUpdate = (profile) => {
+        // todo: double check this
         console.log('profile UPDATE!', JSON.stringify(profile))
         // const index = profiles.findIndex((p) => p.id === profile.id)
         // const copyProfiles = [...profiles]

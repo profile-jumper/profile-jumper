@@ -8,16 +8,13 @@ import * as profileIconUtility from '../../../../utility/profile/profile-icon-ut
 import { ProfileAdd } from './profile-add/ProfileAdd'
 import { ProfileRemove } from './profile-remove/ProfileRemove'
 import { isEntityEmpty } from '../../../../utility/entity/entity-utility'
-import { generateUniqueId } from '../../../../utility/identifier/id-utility'
+import { mapProfileToData, mapValuesToProfile, resetProfileData } from '../../../../data/mapper/profile-data-mapper'
 
 import './SettingProfile.css'
-import { mapProfileToData, mapValuesToProfile } from '../../../../data/mapper/profile-data-mapper'
 
 export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onProfileUpdate, primaryInput }) => {
-    const editProfile = useRef(profile)
+    const editProfile = useRef(mapProfileToData(profile))
     const [updated, setUpdated] = useState(false)
-    // todo : use edit profile -> icon
-    const [profileIconName, setProfileIconName] = useState(profile?.icon || '')
 
     const { register, watch, reset, formState: { errors }, handleSubmit } = useForm({
         mode: 'onChange',
@@ -29,15 +26,12 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
             const inputValue = (formValue && formValue[name]) ? formValue[name] : ''
             if (name === PROFILE_URL) {
                 const profileIconUrlHint = profileIconUtility.profileIconFromUrl(inputValue)
-                setProfileIconName(profileIconUrlHint)
-                // todo: should override title (perhaps have waterfall, delegated logic)
-                editProfile.current = {...editProfile.current, profileUrl: inputValue}
+                editProfile.current = {...editProfile.current, profileUrl: inputValue, profileIcon: profileIconUrlHint}
                 setUpdated(true)
             }
             if (name === PROFILE_TITLE) {
-                // todo: look into profileIconUtility.findProfileIconKeyForTitle()
-                setProfileIconName(inputValue)
-                editProfile.current = {...editProfile.current, profileTitle: inputValue}
+                const profileIconTitleHint = profileIconUtility.findProfileIconKeyForTitle(inputValue)
+                editProfile.current = {...editProfile.current, profileTitle: inputValue, profileIcon: profileIconTitleHint}
                 setUpdated(true)
             }
         })
@@ -66,18 +60,13 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }
 
     const onSubmit = async (data) => {
-        let profile = mapValuesToProfile({...data, profileIcon: profileIconName})
+        let profile = mapValuesToProfile(data)
         onProfileCreate?.(profile)
         resetForm()
     }
 
     const resetForm = () => {
-        reset({
-            id: '',
-            profileUrl: '',
-            profileTitle: ''
-        })
-        setProfileIconName('')
+        reset(resetProfileData())
     }
 
     let className = 'SettingProfile'
@@ -97,7 +86,7 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
 
             <ProfileUrl register={ register } errors={ errors }/>
             <ProfileTitle register={ register } errors={ errors }/>
-            <ProfileIcon icon={ profileIconName }/>
+            <ProfileIcon icon={ editProfile.current?.profileIcon }/>
 
             { onProfileCreate && <ProfileAdd onCreate={ onProfileAddHandler } enabled={ isValid }/> }
             { onProfileRemove && <ProfileRemove onRemove={ onProfileRemove }/> }
