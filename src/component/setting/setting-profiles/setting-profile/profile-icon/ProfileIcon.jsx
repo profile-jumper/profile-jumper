@@ -6,11 +6,11 @@ import { ColorPicker } from '../../../../color-picker/ColorPicker'
 
 import './ProfileIcon.css'
 
-export const ProfileIcon = ({ icon }) => {
+export const ProfileIcon = ({ icon, onColorChange }) => {
     const [showColorPicker, setShowColorPicker] = useState(false)
 
     const onColorChoose = (color) => {
-        console.log('color!', color)
+        onColorChange(color)
         toggleColorPicker()
     }
 
