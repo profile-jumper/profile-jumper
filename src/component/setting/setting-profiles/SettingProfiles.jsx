@@ -62,19 +62,15 @@ export const SettingProfiles = () => {
     }
 
     const onProfileDelete = (id) => {
-        // todo: ordering could be screwed
         const profilesWithoutDeleted = profiles.filter(profile => profile.id !== id)
         setProfiles(profilesWithoutDeleted)
     }
 
     const onProfileUpdate = (profile) => {
-        // todo: double check this
-        console.log('profile UPDATE!', JSON.stringify(profile))
-        // const index = profiles.findIndex((p) => p.id === profile.id)
-        // const copyProfiles = [...profiles]
-        // copyProfiles[index] = { profile }
-        // setProfiles(copyProfiles)
-        // console.log('profile UPDATED!!')
+        const index = profiles.findIndex((p) => p.id === profile.id)
+        const copyProfiles = [...profiles]
+        copyProfiles[index] = { profile }
+        setProfiles(copyProfiles)
     }
 
     return (

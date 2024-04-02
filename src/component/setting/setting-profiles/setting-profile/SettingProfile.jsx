@@ -13,7 +13,7 @@ import { mapProfileToData, mapValuesToProfile, resetProfileData } from '../../..
 import './SettingProfile.css'
 
 export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onProfileUpdate, primaryInput }) => {
-    const editProfile = useRef(mapProfileToData(profile))
+    const [editProfileData, setEditProfileData] = useState(mapProfileToData(profile))
     const [updated, setUpdated] = useState(false)
 
     const { register, watch, reset, formState: { errors }, handleSubmit } = useForm({
@@ -26,12 +26,12 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
             const inputValue = (formValue && formValue[name]) ? formValue[name] : ''
             if (name === PROFILE_URL) {
                 const profileIconUrlHint = profileIconUtility.profileIconFromUrl(inputValue)
-                editProfile.current = {...editProfile.current, profileUrl: inputValue, profileIcon: profileIconUrlHint}
+                setEditProfileData({ ...editProfileData, profileUrl: inputValue, profileIcon: profileIconUrlHint })
                 setUpdated(true)
             }
             if (name === PROFILE_TITLE) {
                 const profileIconTitleHint = profileIconUtility.findProfileIconKeyForTitle(inputValue)
-                editProfile.current = {...editProfile.current, profileTitle: inputValue, profileIcon: profileIconTitleHint}
+                setEditProfileData({ ...editProfileData, profileTitle: inputValue, profileIcon: profileIconTitleHint })
                 setUpdated(true)
             }
         })
@@ -39,10 +39,10 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }, [watch])
 
     useEffect(() => {
-        if(updated) {
+        // no update handler (means should not update)
+        if (onProfileUpdate && updated) {
             const updateTimer = setTimeout(() => {
-                console.log('change detected... UPDATING')
-                onProfileUpdate(editProfile.current)
+                onProfileUpdate(mapValuesToProfile(editProfileData))
                 setUpdated(false)
             }, 2000)
             return () => {
@@ -60,12 +60,13 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }
 
     const onSubmit = async (data) => {
-        let profile = mapValuesToProfile(data)
+        let profile = mapValuesToProfile({ ...data, profileUrl: editProfileData.profileUrl })
         onProfileCreate?.(profile)
         resetForm()
     }
 
     const resetForm = () => {
+        setEditProfileData(resetProfileData())
         reset(resetProfileData())
     }
 
@@ -79,14 +80,14 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
         <div {...idProperties} className={className} {...draggableOptions}>
         */
 
-        <div className={className}>
+        <div className={ className }>
             {/*
             <ProfileHandle showHandle={!this.props.noDragHandle}/>
             */ }
 
             <ProfileUrl register={ register } errors={ errors }/>
             <ProfileTitle register={ register } errors={ errors }/>
-            <ProfileIcon icon={ editProfile.current?.profileIcon }/>
+            <ProfileIcon icon={ editProfileData.profileIcon }/>
 
             { onProfileCreate && <ProfileAdd onCreate={ onProfileAddHandler } enabled={ isValid }/> }
             { onProfileRemove && <ProfileRemove onRemove={ onProfileRemove }/> }
