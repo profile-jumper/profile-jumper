@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { PROFILE_URL, ProfileUrl } from './profile-url/ProfileUrl'
@@ -11,18 +11,17 @@ import { isEntityEmpty } from '../../../../utility/entity/entity-utility'
 import { generateUniqueId } from '../../../../utility/identifier/id-utility'
 
 import './SettingProfile.css'
+import { mapProfileToData, mapValuesToProfile } from '../../../../data/mapper/profile-data-mapper'
 
-export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, primaryInput }) => {
+export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onProfileUpdate, primaryInput }) => {
+    const editProfile = useRef(profile)
+    const [updated, setUpdated] = useState(false)
+    // todo : use edit profile -> icon
     const [profileIconName, setProfileIconName] = useState(profile?.icon || '')
 
     const { register, watch, reset, formState: { errors }, handleSubmit } = useForm({
         mode: 'onChange',
-        // todo: need mapper
-        defaultValues: {
-            id: profile?.id,
-            profileUrl: profile?.url,
-            profileTitle: profile?.title
-        }
+        defaultValues: mapProfileToData(profile)
     })
 
     useEffect(() => {
@@ -32,14 +31,32 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, prim
                 const profileIconUrlHint = profileIconUtility.profileIconFromUrl(inputValue)
                 setProfileIconName(profileIconUrlHint)
                 // todo: should override title (perhaps have waterfall, delegated logic)
+                editProfile.current = {...editProfile.current, profileUrl: inputValue}
+                setUpdated(true)
             }
             if (name === PROFILE_TITLE) {
                 // todo: look into profileIconUtility.findProfileIconKeyForTitle()
                 setProfileIconName(inputValue)
+                editProfile.current = {...editProfile.current, profileTitle: inputValue}
+                setUpdated(true)
             }
         })
         return () => subscription.unsubscribe()
     }, [watch])
+
+    useEffect(() => {
+        if(updated) {
+            const updateTimer = setTimeout(() => {
+                console.log('change detected... UPDATING')
+                onProfileUpdate(editProfile.current)
+                setUpdated(false)
+            }, 2000)
+            return () => {
+                clearTimeout(updateTimer)
+            }
+        }
+    }, [updated]);
+
 
     // will be valid 1st time round (onProfileAddHandler -> handleSubmit will re-validate)
     const isValid = isEntityEmpty(errors)
@@ -49,27 +66,18 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, prim
     }
 
     const onSubmit = async (data) => {
-        let profile = mapValuesToProfile(data)
+        let profile = mapValuesToProfile({...data, profileIcon: profileIconName})
         onProfileCreate?.(profile)
-        // todo: might need to reuse submission mechanics -> delegate to "handler" e.g. onProfileUpdate
         resetForm()
     }
 
     const resetForm = () => {
-        // todo: need mapper
         reset({
             id: '',
             profileUrl: '',
             profileTitle: ''
         })
         setProfileIconName('')
-        console.log('HUGE reset!')
-    }
-
-    const mapValuesToProfile = (data) => {
-        const id = data.id || generateUniqueId()
-        // todo: need mapper
-        return { id: id, url: data.profileUrl, title: data.profileTitle, icon: profileIconName }
     }
 
     let className = 'SettingProfile'
