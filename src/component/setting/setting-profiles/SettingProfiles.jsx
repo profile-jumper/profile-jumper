@@ -4,6 +4,7 @@ import { useProfiles, useSetProfiles } from '../../../data/provider/jotai-provid
 import { SettingProfile } from './setting-profile/SettingProfile'
 
 import './SettingProfiles.css'
+import { OrderedSettingProfiles } from './ordered-setting-profiles/OrderedSettingProfiles'
 
 export const SettingProfiles = () => {
     const profiles = useProfiles()
@@ -27,17 +28,8 @@ export const SettingProfiles = () => {
 
     return (
         <div className="SettingsProfilesContainer">
-            { profiles.map(profile => (
-                <SettingProfile
-                    key={ profile.id }
-                    id={ profile.id }
-                    profile={ profile }
-                    onProfileUpdate={ onProfileUpdate }
-                    onProfileRemove={ () => onProfileDelete(profile.id) }
-                />
-            )) }
-
-            <SettingProfile onProfileCreate={ onProfileCreate } primaryInput/>
+            <OrderedSettingProfiles profiles={profiles}/>
+            <SettingProfile key="0" onProfileCreate={ onProfileCreate } primaryInput/>
         </div>
     )
 }
