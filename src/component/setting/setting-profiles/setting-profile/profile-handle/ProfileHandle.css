@@ -5,15 +5,15 @@
 
 .ProfileHandle button {
   background-color: #d0d0d0;
-  border: none;
-  color: black;
-  padding: 5px 10px;
+  border: 1px solid #8c8c8c;
+  color: #666666;
+  padding: 2px 4px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
   cursor: n-resize;
   border-radius: 3px;
-  width: 40px;
+  width: 30px;
 }
 
 .ProfileHandle button:focus, button:focus{
