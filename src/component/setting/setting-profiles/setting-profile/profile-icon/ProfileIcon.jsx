@@ -6,7 +6,7 @@ import { ColorPicker } from '../../../../color-picker/ColorPicker'
 
 import './ProfileIcon.css'
 
-export const ProfileIcon = ({ icon, onColorChange }) => {
+export const ProfileIcon = ({ icon, onColorChange, color = '#325d97' }) => {
     const [showColorPicker, setShowColorPicker] = useState(false)
 
     const onColorChoose = (color) => {
@@ -18,8 +18,15 @@ export const ProfileIcon = ({ icon, onColorChange }) => {
 
     return (
         <div className="SettingProfileIconWrapper">
-            <ColorPicker visible={showColorPicker} onColorChoose={onColorChoose}/>
-            <FontAwesomeIcon icon={ findProfileIcon(icon) } size={ smallIconSize } className="SettingProfileIcon" onClick={toggleColorPicker}/>
+            <ColorPicker visible={ showColorPicker } onColorChoose={ onColorChoose } defaultColor={color}/>
+            <FontAwesomeIcon icon={ findProfileIcon(icon) }
+                             size={ smallIconSize }
+                             className="SettingProfileIcon"
+                             onClick={ toggleColorPicker }
+                             style={ {
+                                 'color': color,
+                             } }
+            />
         </div>
     )
 }

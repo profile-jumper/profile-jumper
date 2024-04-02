@@ -89,7 +89,7 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
 
             <ProfileUrl register={ register } errors={ errors }/>
             <ProfileTitle register={ register } errors={ errors }/>
-            <ProfileIcon icon={ editProfileData.profileIcon } onColorChange={onIconColorChange}/>
+            <ProfileIcon icon={ editProfileData.profileIcon } onColorChange={onIconColorChange} color={editProfileData?.profileIconColor}/>
 
             { onProfileCreate && <ProfileAdd onCreate={ onProfileAddHandler } enabled={ isValid }/> }
             { onProfileRemove && <ProfileRemove onRemove={ onProfileRemove }/> }
