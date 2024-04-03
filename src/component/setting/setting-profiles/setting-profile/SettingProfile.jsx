@@ -26,6 +26,9 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
         const subscription = watch((formValue, { name }) => {
             const inputValue = (formValue && formValue[name]) ? formValue[name] : ''
             if (name === PROFILE_URL) {
+                // todo: HUGE HERE
+                // todo: need a more advanced way of finding icons
+                console.log(`url changed -> so icon needs to change using:[${inputValue}]`)
                 const profileIconUrlHint = profileIconUtility.profileIconFromUrl(inputValue)
                 setEditProfileData({ ...editProfileData, profileUrl: inputValue, profileIcon: profileIconUrlHint })
                 setUpdated(true)

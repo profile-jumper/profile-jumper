@@ -1,19 +1,15 @@
 import React from 'react'
 
-import * as faIcons from 'react-icons/fa'
-import * as siIcons from 'react-icons/si'
-
 import { findIconInLibraries, obtainExactIconInLibraries } from '../../utility/icon/icon-lib-utility'
-
-const iconLibraries = new Map()
-iconLibraries.set('si', siIcons)
-iconLibraries.set('fa', faIcons)
+import { iconLibraries } from '../../config/iconLibraries'
 
 export const LibraryIcon = ({ name, color, className }) => {
+    const DEFAULT_ICON_NAME = 'FaLink'
+
     const SoughtIcon = findIconInLibraries(name, iconLibraries)
 
     if(!SoughtIcon) {
-        const DefaultIcon = obtainExactIconInLibraries('FaLink')
+        const DefaultIcon = obtainExactIconInLibraries(DEFAULT_ICON_NAME)
         return <DefaultIcon style={ { 'color': color } } className={className} />
     }
 
