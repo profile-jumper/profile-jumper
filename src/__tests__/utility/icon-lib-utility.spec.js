@@ -1,7 +1,7 @@
 import * as faIcons from 'react-icons/fa'
 import * as siIcons from 'react-icons/si'
 
-import { findIconForUrl, findIconInLibraries, obtainExactIconInLibraries } from '../../utility/icon/icon-lib-utility'
+import { findIconInLibraries, findIconNameForUrl, obtainExactIconInLibraries } from '../../utility/icon/icon-lib-utility'
 
 describe('LibraryIcon Lib Utility', () => {
 
@@ -77,15 +77,25 @@ describe('LibraryIcon Lib Utility', () => {
         expect(icon).toBeUndefined()
     })
 
-    test('should not icon for url', () => {
+    test('should find icon name for explicit url name part', () => {
         const iconLibraries = new Map()
         iconLibraries.set('si', siIcons)
         iconLibraries.set('fa', faIcons)
 
-        const googleIcon = findIconForUrl('https://google.com', iconLibraries)
-        expect(googleIcon.name).toEqual('SiGoogle')
+        const googleIconName = findIconNameForUrl('https://google.com', iconLibraries)
+        expect(googleIconName).toEqual('Google')
 
-        const metaIcon = findIconForUrl('https://meta.com', iconLibraries)
-        expect(metaIcon.name).toEqual('SiMeta')
+        const metaIconName = findIconNameForUrl('https://meta.com', iconLibraries)
+        expect(metaIconName).toEqual('Meta')
     })
+
+    test('should find default icon name for non matching url name part', () => {
+        const iconLibraries = new Map()
+        iconLibraries.set('si', siIcons)
+        iconLibraries.set('fa', faIcons)
+
+        const iconName = findIconNameForUrl('https://non-existent-icon.com', iconLibraries)
+        expect(iconName).toEqual('Link')
+    })
+
 })

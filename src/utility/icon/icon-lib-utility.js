@@ -1,4 +1,5 @@
 import { hasValue, isSame } from '../string/string-utility'
+import { DEFAULT_ICON_NAME, IconLibraries } from '../../config/IconLibraries'
 
 export const obtainExactIconInLibraries = (name, iconLibraries) => {
     const ICON_NOT_FOUND = undefined
@@ -10,6 +11,7 @@ export const obtainExactIconInLibraries = (name, iconLibraries) => {
 }
 
 export const findIconInLibraries = (name, iconLibraries) => {
+    if (!hasValue(name)) return undefined
     const foundIcons = []
     for (const [key, lib] of iconLibraries.entries()) {
         const iconFound = findIconInLibrary(name, lib, key)
@@ -21,18 +23,23 @@ export const findIconInLibraries = (name, iconLibraries) => {
 const findIconInLibrary = (name, iconLib, libKey) => {
     const libKeyLen = libKey.length
     for (let libIconName of Object.keys(iconLib)) {
-        const libIconNameNormed = libIconName.substring(libKeyLen)
+        const libIconNameNormed = normIconName(libIconName, libKeyLen)
         if (isSame(libIconNameNormed, name)) return iconLib[libIconName]
     }
 }
 
-export const findIconForUrl = (url, iconLibraries) => {
-    // todo: need to have default!
+export const findIconNameForUrl = (url, iconLibraries=IconLibraries) => {
     const urlScrubbed = scrubUrlParts(url)
-    return findIconInLibraries(urlScrubbed, iconLibraries)
+    const foundResult = findIconInLibraries(urlScrubbed, iconLibraries)
+    if (foundResult) return normIconName(foundResult.name)
+    return normIconName(DEFAULT_ICON_NAME)
 }
 
 const scrubUrlParts = (url) => {
     const urlWithoutPreAndTldPartsRegex = /^(http|s|:|\/)*|(\.\w+)$/gi
     return url.replace(urlWithoutPreAndTldPartsRegex, '').trim()
+}
+
+const normIconName = (iconName, keyLen=2) => {
+    return iconName.substring(keyLen)
 }
