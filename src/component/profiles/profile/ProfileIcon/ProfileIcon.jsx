@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { findProfileIcon, largeIconSize } from '../../../../utility/profile/profile-icon'
 
 import { DEFAULT_ICON_COLOUR } from '../../../../config/constants'
+import { LibraryIcon } from '../../../icon/LibraryIcon'
 
 import './ProfileIcon.css'
-import { Icon } from '../../../icon/Icon'
 
-export const ProfileIcon = ({ iconName, color = DEFAULT_ICON_COLOUR }) => (
+export const ProfileIcon = ({ icon, color = DEFAULT_ICON_COLOUR }) => (
     // <FontAwesomeIcon icon={ findProfileIcon(icon) } size={ largeIconSize } className="ProfileIcon" style={ { 'color': color } }/>
-    <Icon name="SiWordpress" color={color} className="ProfileIcon" />
+    <LibraryIcon name={ icon } color={color} className="ProfileIcon" />
 )
