@@ -25,3 +25,14 @@ const findIconInLibrary = (name, iconLib, libKey) => {
         if (isSame(libIconNameNormed, name)) return iconLib[libIconName]
     }
 }
+
+export const findIconForUrl = (url, iconLibraries) => {
+    // todo: need to have default!
+    const urlScrubbed = scrubUrlParts(url)
+    return findIconInLibraries(urlScrubbed, iconLibraries)
+}
+
+const scrubUrlParts = (url) => {
+    const urlWithoutPreAndTldPartsRegex = /^(http|s|:|\/)*|(\.\w+)$/gi
+    return url.replace(urlWithoutPreAndTldPartsRegex, '').trim()
+}

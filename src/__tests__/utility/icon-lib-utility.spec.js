@@ -1,7 +1,7 @@
 import * as faIcons from 'react-icons/fa'
 import * as siIcons from 'react-icons/si'
 
-import { findIconInLibraries, obtainExactIconInLibraries } from '../../utility/icon/icon-lib-utility'
+import { findIconForUrl, findIconInLibraries, obtainExactIconInLibraries } from '../../utility/icon/icon-lib-utility'
 
 describe('LibraryIcon Lib Utility', () => {
 
@@ -77,4 +77,15 @@ describe('LibraryIcon Lib Utility', () => {
         expect(icon).toBeUndefined()
     })
 
+    test('should not icon for url', () => {
+        const iconLibraries = new Map()
+        iconLibraries.set('si', siIcons)
+        iconLibraries.set('fa', faIcons)
+
+        const googleIcon = findIconForUrl('https://google.com', iconLibraries)
+        expect(googleIcon.name).toEqual('SiGoogle')
+
+        const metaIcon = findIconForUrl('https://meta.com', iconLibraries)
+        expect(metaIcon.name).toEqual('SiMeta')
+    })
 })

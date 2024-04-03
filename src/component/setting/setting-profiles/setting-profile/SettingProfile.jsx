@@ -12,6 +12,7 @@ import { mapProfileToData, mapValuesToProfile, resetProfileData } from '../../..
 import { ProfileHandle } from './profile-handle/ProfileHandle'
 
 import './SettingProfile.css'
+import { findIconForUrl } from '../../../../utility/icon/icon-lib-utility'
 
 export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onProfileUpdate, primaryInput }) => {
     const [editProfileData, setEditProfileData] = useState(mapProfileToData(profile))
@@ -29,8 +30,8 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
                 // todo: HUGE HERE
                 // todo: need a more advanced way of finding icons
                 console.log(`url changed -> so icon needs to change using:[${inputValue}]`)
-                const profileIconUrlHint = profileIconUtility.profileIconFromUrl(inputValue)
-                setEditProfileData({ ...editProfileData, profileUrl: inputValue, profileIcon: profileIconUrlHint })
+                const profileIconForUrl = findIconForUrl(inputValue)
+                setEditProfileData({ ...editProfileData, profileUrl: inputValue, profileIcon: profileIconForUrl })
                 setUpdated(true)
             }
             if (name === PROFILE_TITLE) {
