@@ -11,7 +11,7 @@ export const Profiles = () => {
 
     let profilesListed = (
         <div className="NoProfiles">
-            <h1>Setup Profile Links</h1>
+            <h1>Setup Your Profile Links</h1>
             <p>Click the "gears" icon below to add your profiles links...</p>
 
             <div className="ConfigureInfo">

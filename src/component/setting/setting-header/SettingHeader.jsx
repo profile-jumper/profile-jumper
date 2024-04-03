@@ -10,8 +10,14 @@ export const SettingHeader = () => (
         <SettingLogo/>
 
         <div className="SettingInfo">
-            <h1>Profile Jumper!</h1>
-            <p><b>Settings</b>: Enter you profile URL, Title (icon will automatically change). Then click on the "+" button.</p>
+            <h1>
+                <a href="https://profile-jumper.github.io"
+                   className="BrandingLink"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Profile Jumper! - See website for info">Profile Jumper!</a>
+                <span>Settings</span></h1>
+            <p>Enter your profile link URL & Title (icon will automatically change). Then click on the "+" button.</p>
         </div>
     </div>
 )
