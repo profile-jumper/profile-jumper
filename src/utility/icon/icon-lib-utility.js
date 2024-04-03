@@ -63,12 +63,12 @@ const scrubUrlParts = (url) => {
     return url.replace(urlWithoutPreAndTldPartsRegex, '').trim()
 }
 
-const normIconName = (iconName, keyLen=2) => {
-    return iconName.substring(keyLen)
-}
-
 export const findIconNameTitle = (title, iconLibraries=IconLibraries) => {
     const foundResult = findIconInLibraries(title, iconLibraries)
     if (foundResult) return normIconName(foundResult.name)
     return normIconName(DEFAULT_ICON_NAME)
+}
+
+const normIconName = (iconName, keyLen=2) => {
+    return iconName.substring(keyLen)
 }
