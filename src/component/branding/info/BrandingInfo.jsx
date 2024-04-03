@@ -13,8 +13,9 @@ export const BrandingInfo = () => (
             <p>Jump between any of your online profiles! Click on cogs or right-click icon for "options" to configure instantly.</p>
         </div>
         <div className="ConfigureInfo">
-            <a className="ConfigureClick" href="#settings" target="_blank" rel="noopener noreferrer"
-               title="Click here to configure - Profile Jumper!"><DisplayIcon icon="FaCogs"/></a>
+            <a className="ConfigureClick" href="#settings" target="_blank" rel="noopener noreferrer" title="Click here to configure - Profile Jumper!">
+                <DisplayIcon icon="FaCogs"/>
+            </a>
         </div>
     </React.Fragment>
 )
