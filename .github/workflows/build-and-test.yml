@@ -10,13 +10,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - id: get-commit-msg
-        name: Collect commit message
+      - name: Collect commit message
+        id: get-commit-msg
         run: |
           echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
       - name: Check commit message
         run: |
-          echo "Commit message was:[${COMMIT_MSG}]"
+          echo "Commit message was:[${commit_msg}]"
 
   build_and_test:
     needs: collect_commit_message
