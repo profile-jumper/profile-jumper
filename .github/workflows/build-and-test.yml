@@ -2,6 +2,10 @@ name: Build and Test
 
 on: [push]
 
+strategy:
+  matrix:
+    node-version: ['18.x']
+
 jobs:
   collect_commit_message:
     runs-on: ubuntu-latest
@@ -14,6 +18,19 @@ jobs:
       - name: Check commit message
         run: |
           echo "Commit message was:[${COMMIT_MSG}]"
+
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Build and Test
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
 
 # build wit node 18 (alpine)
 # node:18.2.0-alpine
