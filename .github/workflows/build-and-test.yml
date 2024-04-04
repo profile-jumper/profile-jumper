@@ -13,11 +13,12 @@ jobs:
       - id: get-commit-msg
         name: Collect commit message
         run: |
-          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_ENV"
           echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
       - name: Check commit message
+        env:
+          commit_msg: ${{steps.get-commit-msg.outputs.commit_msg}}
         run: |
-          echo "Commit message was:[${COMMIT_MSG}]"
+          echo "Commit message was:[${commit_msg}]"
 
   build_and_test:
     needs: collect_commit_message
