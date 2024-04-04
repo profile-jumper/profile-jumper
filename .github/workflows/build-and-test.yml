@@ -16,6 +16,7 @@ jobs:
           echo "Commit message was:[${COMMIT_MSG}]"
 
   build_and_test:
+    needs: collect_commit_message
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,11 +26,14 @@ jobs:
         with:
           node-version: '18.x'
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Build node app
         run: npm run build
       - name: Test node app
         run: npm test
+      - name: Use commit message
+        run: |
+          echo "Node will use commit message:[${COMMIT_MSG}]"
 
 # build wit node 18 (alpine)
 # node:18.2.0-alpine
