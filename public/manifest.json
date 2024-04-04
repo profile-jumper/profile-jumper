@@ -15,7 +15,8 @@
   },
   "action": {
     "default_icon": "images/icon192.png",
-    "default_popup": "index.html#popup"
+    "default_popup": "index.html#popup",
+    "default_title": "Profile Jumper! Jump easily between your profiles."
   },
   "options_page": "index.html#settings",
   "permissions": [
