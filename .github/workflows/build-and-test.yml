@@ -41,6 +41,3 @@ jobs:
           commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
         run: |
           echo "Node will use commit message:[${commit_msg}]"
-
-# build wit node 18 (alpine)
-# node:18.2.0-alpine
