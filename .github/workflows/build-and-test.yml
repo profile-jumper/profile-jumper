@@ -5,12 +5,15 @@ on: [push]
 jobs:
   collect_commit_message:
     runs-on: ubuntu-latest
+    outputs:
+      commit_msg: ${{ steps.get-commit-msg.outputs.COMMIT_MSG }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Collect commit message
+      - id: get-commit-msg
+        name: Collect commit message
         run: |
-          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_ENV"
+          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
       - name: Check commit message
         run: |
           echo "Commit message was:[${COMMIT_MSG}]"
@@ -19,6 +22,8 @@ jobs:
     needs: collect_commit_message
     runs-on: ubuntu-latest
     steps:
+      - env:
+          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup Node.js
@@ -33,7 +38,7 @@ jobs:
         run: npm test
       - name: Use commit message
         run: |
-          echo "Node will use commit message:[${COMMIT_MSG}]"
+          echo "Node will use commit message:[${commit_msg}]"
 
 # build wit node 18 (alpine)
 # node:18.2.0-alpine
