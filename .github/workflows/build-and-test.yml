@@ -43,7 +43,7 @@ jobs:
           echo "Node will use commit message:[${commit_msg}]"
 
   should_release:
-    needs: build_and_test
+    needs: [collect_commit_message, build_and_test]
     runs-on: ubuntu-latest
     outputs:
       release_version: ${{ steps.get-release-version.outputs.RELEASE_VERSION }}
