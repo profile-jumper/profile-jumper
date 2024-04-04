@@ -16,7 +16,7 @@ jobs:
           echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
       - name: Check commit message
         run: |
-          echo "Commit message was:[${commit_msg}]"
+          echo "Commit message was:[${COMMIT_MSG}]"
 
 #  build_and_test:
 #    needs: collect_commit_message
