@@ -1,0 +1,19 @@
+name: Build and Test
+
+on: [push]
+
+jobs:
+  collect_commit_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Collect commit message
+        run: |
+          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_ENV"
+      - name: Check commit message
+        run: |
+          echo "Commit message was:[${COMMIT_MSG}]"
+
+# build wit node 18 (alpine)
+# node:18.2.0-alpine
