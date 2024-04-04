@@ -63,10 +63,11 @@ jobs:
         env:
           commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
         run: |
-          echo "RELEASE_VERSION=$(${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')" >> "$GITHUB_OUTPUT"
+          RELEASE_VERSION=$(echo "testing a release:0.0.8" | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')
+          echo $RELEASE_VERSION >> $GITHUB_OUTPUT
       - name: Use release version
         env:
           release_version: ${{steps.get-release-version.outputs.RELEASE_VERSION}}
         run: |
-          echo "Release version is:[${release_version}]"
+          echo "RELEASE is:[${release_version}]"
           
