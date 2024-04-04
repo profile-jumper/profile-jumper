@@ -2,10 +2,6 @@ name: Build and Test
 
 on: [push]
 
-strategy:
-  matrix:
-    node-version: ['18.x']
-
 jobs:
   collect_commit_message:
     runs-on: ubuntu-latest
@@ -24,13 +20,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Build and Test
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build node app
+        run: npm run build
+      - name: Test node app
+        run: npm test
 
 # build wit node 18 (alpine)
 # node:18.2.0-alpine
