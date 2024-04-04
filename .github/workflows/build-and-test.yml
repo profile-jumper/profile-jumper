@@ -48,6 +48,16 @@ jobs:
     outputs:
       release_version: ${{ steps.get-release-version.outputs.RELEASE_VERSION }}
     steps:
+      - name: Use commit message
+        env:
+          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
+        run: |
+          echo "Release check will use commit message:[${commit_msg}]"
+      - name: Show release version
+        env:
+          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
+        run: |
+          echo ${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}'
       - name: Obtain release version
         id: get-release-version
         env:
