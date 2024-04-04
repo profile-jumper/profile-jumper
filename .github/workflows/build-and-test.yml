@@ -22,8 +22,6 @@ jobs:
     needs: collect_commit_message
     runs-on: ubuntu-latest
     steps:
-      - env:
-          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup Node.js
@@ -37,6 +35,8 @@ jobs:
       - name: Test node app
         run: npm test
       - name: Use commit message
+        env:
+          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
         run: |
           echo "Node will use commit message:[${commit_msg}]"
 
