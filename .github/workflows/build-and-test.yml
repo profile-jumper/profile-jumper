@@ -14,9 +14,9 @@ jobs:
         name: Collect commit message
         run: |
           echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
-#      - name: Check commit message
-#        run: |
-#          echo "Commit message was:[${commit_msg}]"
+      - name: Check commit message
+        run: |
+          echo "Commit message was:[${commit_msg}]"
 
 #  build_and_test:
 #    needs: collect_commit_message
