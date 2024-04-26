@@ -1,0 +1,17 @@
+name: Commit & Store Variables
+
+on: [push]
+
+jobs:
+  collect_commit_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - id: get-commit-msg
+        name: Collect commit message
+        run: |
+          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "GITHUB_ENV"
+      - name: Check commit message
+        run: |
+          echo "Commit message was:[${COMMIT_MSG}]"

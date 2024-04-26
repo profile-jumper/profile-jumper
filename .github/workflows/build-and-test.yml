@@ -1,25 +1,10 @@
 name: Build and Test
 
-on: [push]
+on:
+  repository_dispatch:
+    types: build-and-test
 
 jobs:
-  collect_commit_message:
-    runs-on: ubuntu-latest
-    outputs:
-      commit_msg: ${{ steps.get-commit-msg.outputs.COMMIT_MSG }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - id: get-commit-msg
-        name: Collect commit message
-        run: |
-          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
-      - name: Check commit message
-        env:
-          commit_msg: ${{steps.get-commit-msg.outputs.commit_msg}}
-        run: |
-          echo "Commit message was:[${commit_msg}]"
-
   build_and_test:
     needs: collect_commit_message
     runs-on: ubuntu-latest
