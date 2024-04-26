@@ -3,7 +3,7 @@ name: Build and Test and Release
 on: push
 
 jobs:
-  collect_commit_message:
+  collect_vars:
     runs-on: ubuntu-latest
     outputs:
       COMMIT_MESSAGE: ${{ steps.get-commit-message.outputs.COMMIT_MESSAGE }}
@@ -36,28 +36,33 @@ jobs:
           fi
 
   build_and_test:
-    needs: [collect_commit_message]
+    needs: [collect_vars]
     runs-on: ubuntu-latest
     steps:
-#      - name: checkout repository
-#        uses: actions/checkout@v4
-#      - name: setup node.js
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '18.x'
-#      - name: install dependencies
-#        run: npm install
-#      - name: build node app
-#        run: npm run build
-#      - name: test node app
-#        run: npm test
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      - name: install dependencies
+        run: npm install
+      - name: build node app
+        run: npm run build
+      - name: test node app
+        run: npm test
+
+  should_release:
+    needs: [build_and_test, collect_vars]
+    runs-on: ubuntu-latest
+    steps:
       - name: check vars
         env:
-          COMMIT_MESSAGE: ${{needs.collect_commit_message.outputs.COMMIT_MESSAGE}}
-          RELEASE_VERSION: ${{needs.collect_commit_message.outputs.RELEASE_VERSION}}
-          TAG_VERSION: ${{needs.collect_commit_message.outputs.TAG_VERSION}}
+          COMMIT_MESSAGE: ${{needs.collect_vars.outputs.COMMIT_MESSAGE}}
+          RELEASE_VERSION: ${{needs.collect_vars.outputs.RELEASE_VERSION}}
+          TAG_VERSION: ${{needs.collect_vars.outputs.TAG_VERSION}}
         run: |
-          echo "tha vars are commit:[$COMMIT_MESSAGE] release:[$RELEASE_VERSION] tag:[$TAG_VERSION]"
+          echo "the vars which will be used are commit:[$COMMIT_MESSAGE] release:[$RELEASE_VERSION] tag:[$TAG_VERSION]"
 
 
 #  should_release:
