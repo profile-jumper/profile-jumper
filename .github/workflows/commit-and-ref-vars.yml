@@ -19,7 +19,13 @@ jobs:
           then
             echo "RELEASE_VERSION=${RELEASE_COMMIT_PART#release:}" >> "$GITHUB_ENV"
           fi
+      - name: collect last tag version
+        run: |
+          LATEST_TAG=$(git tag --sort=-taggerdate | head -1)
+          if [ "${#LATEST_TAG}" -ge 3 ]
+          then
+            echo "TAG_VERSION=$LATEST_TAG" >> "$GITHUB_ENV"
+          fi
       - name: check
         run: |
-          echo "The COMMIT MESSAGE:[$COMMIT_MESSAGE] and REVISION:[$RELEASE_VERSION]"
- 
+          echo "The COMMIT MESSAGE:[$COMMIT_MESSAGE] and RELEASE:[$RELEASE_VERSION] and TAG:[$TAG_VERSION]"
