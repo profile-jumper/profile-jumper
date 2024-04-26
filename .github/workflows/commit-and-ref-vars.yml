@@ -15,7 +15,7 @@ jobs:
       - name: extract accessible revision
         run: |
           RELEASE_VERSION=$(echo $COMMIT_MESSAGE | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')
-          echo "We have a release?"
+          echo "We have a release? [${RELEASE_VERSION}] from $COMMIT_MESSAGE"
           if [ -z $RELEASE_VERSION ]
           then
             echo "Yes we do! [$RELEASE_VERSION]"
