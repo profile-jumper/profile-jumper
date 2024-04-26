@@ -1,26 +1,51 @@
-name: Build and Test
+name: Build and Test and Release
 
-on:
-  repository_dispatch:
-    types: trigger-build-and-test
+on: push
 
 jobs:
-  build_and_test:
+  collect_commit_message:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
-      - name: install dependencies
-        run: npm install
-      - name: build node app
-        run: npm run build
-      - name: test node app
-        run: npm test
+      - id: get-commit-msg
+        name: collect commit message
+        run: |
+          echo "COMMIT_MESSAGE=$(git show -s --format=%s)" >> "$GITHUB_ENV"
+      - name: extract accessible release
+        run: |
+          RELEASE_COMMIT_PART=$(echo $COMMIT_MESSAGE | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')
+          if [ "${#RELEASE_COMMIT_PART}" -ge 3 ] 
+          then
+            echo "RELEASE_VERSION=${RELEASE_COMMIT_PART#release:}" >> "$GITHUB_ENV"
+          fi
+      - name: collect last tag version
+        run: |
+          LATEST_TAG=$(git tag --sort=-taggerdate | head -1)
+          if [ "${#LATEST_TAG}" -ge 3 ]
+          then
+            echo "TAG_VERSION=$LATEST_TAG" >> "$GITHUB_ENV"
+          fi
 
+  build_and_test:
+    needs: [collect_commit_message]
+    runs-on: ubuntu-latest
+    steps:
+#      - name: checkout repository
+#        uses: actions/checkout@v4
+#      - name: setup node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '18.x'
+#      - name: install dependencies
+#        run: npm install
+#      - name: build node app
+#        run: npm run build
+#      - name: test node app
+#        run: npm test
+      - name: check vars
+        run: |
+          echo "tha vars are [$COMMIT_MESSAGE]"
 #  should_release:
 #    needs: [collect_commit_message, build_and_test]
 #    runs-on: ubuntu-latest
