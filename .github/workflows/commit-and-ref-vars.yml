@@ -11,7 +11,7 @@ jobs:
       - id: get-commit-msg
         name: Collect commit message
         run: |
-          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "GITHUB_ENV"
+          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_ENV"
       - name: Check commit message
         run: |
           echo "Commit message was:[${COMMIT_MSG}]"
