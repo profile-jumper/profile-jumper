@@ -56,7 +56,7 @@ jobs:
           TAG_VERSION: ${{needs.collect_commit_message.outputs.TAG_VERSION}}
         run: |
           echo "tha vars are commit:[$COMMIT_MESSAGE] release:[$RELEASE_VERSION] tag:[$TAG_VERSION]"
-          
+
 
 #  should_release:
 #    needs: [collect_commit_message, build_and_test]
