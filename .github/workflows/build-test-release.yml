@@ -52,8 +52,10 @@ jobs:
       - name: check vars
         env:
           COMMIT_MESSAGE: ${{needs.collect_commit_message.outputs.COMMIT_MESSAGE}}
+          RELEASE_VERSION: ${{needs.collect_commit_message.outputs.RELEASE_VERSION}}
+          TAG_VERSION: ${{needs.collect_commit_message.outputs.TAG_VERSION}}
         run: |
-          echo "tha vars are [$COMMIT_MESSAGE]"
+          echo "tha vars are commit:[$COMMIT_MESSAGE] release:[$RELEASE_VERSION] tag:[$TAG_VERSION]"
           
 
 #  should_release:
