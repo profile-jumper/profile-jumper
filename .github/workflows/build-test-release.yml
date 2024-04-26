@@ -19,7 +19,7 @@ jobs:
       - id: get-release-version
         name: extract accessible release
         env:
-          COMMIT_MESSAGE: ${{needs.collect_commit_message.outputs.COMMIT_MESSAGE}}
+          COMMIT_MESSAGE: ${{steps.get-commit-message.outputs.COMMIT_MESSAGE}}
         run: |
           RELEASE_COMMIT_PART=$(echo $COMMIT_MESSAGE | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')
           if [ "${#RELEASE_COMMIT_PART}" -ge 3 ] 
