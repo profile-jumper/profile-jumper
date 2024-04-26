@@ -22,3 +22,4 @@ jobs:
       - name: check
         run: |
           echo "The COMMIT MESSAGE:[$COMMIT_MESSAGE] and REVISION:[$RELEASE_VERSION]"
+ 
