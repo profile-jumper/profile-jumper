@@ -5,26 +5,32 @@ on: push
 jobs:
   collect_commit_message:
     runs-on: ubuntu-latest
+    outputs:
+      COMMIT_MESSAGE: ${{ steps.get-commit-message.outputs.COMMIT_MESSAGE }}
+      RELEASE_VERSION: ${{ steps.get-release-version.outputs.RELEASE_VERSION }}
+      TAG_VERSION: ${{ steps.get-tag-version.outputs.TAG_VERSION }}
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - id: get-commit-msg
+      - id: get-commit-message
         name: collect commit message
         run: |
-          echo "COMMIT_MESSAGE=$(git show -s --format=%s)" >> "$GITHUB_ENV"
-      - name: extract accessible release
+          echo "COMMIT_MESSAGE=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
+      - id: get-release-version
+        name: extract accessible release
         run: |
           RELEASE_COMMIT_PART=$(echo $COMMIT_MESSAGE | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')
           if [ "${#RELEASE_COMMIT_PART}" -ge 3 ] 
           then
-            echo "RELEASE_VERSION=${RELEASE_COMMIT_PART#release:}" >> "$GITHUB_ENV"
+            echo "RELEASE_VERSION=${RELEASE_COMMIT_PART#release:}" >> "$GITHUB_OUTPUT"
           fi
-      - name: collect last tag version
+      - id: get-tag-version
+        name: collect last tag version
         run: |
           LATEST_TAG=$(git tag --sort=-taggerdate | head -1)
           if [ "${#LATEST_TAG}" -ge 3 ]
           then
-            echo "TAG_VERSION=$LATEST_TAG" >> "$GITHUB_ENV"
+            echo "TAG_VERSION=$LATEST_TAG" >> "$GITHUB_OUTPUT"
           fi
 
   build_and_test:
@@ -44,8 +50,12 @@ jobs:
 #      - name: test node app
 #        run: npm test
       - name: check vars
+        env:
+          COMMIT_MESSAGE: ${{needs.collect_commit_message.outputs.COMMIT_MESSAGE}}
         run: |
           echo "tha vars are [$COMMIT_MESSAGE]"
+          
+
 #  should_release:
 #    needs: [collect_commit_message, build_and_test]
 #    runs-on: ubuntu-latest
