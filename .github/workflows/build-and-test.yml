@@ -2,57 +2,51 @@ name: Build and Test
 
 on:
   repository_dispatch:
-    types: build-and-test
+    types: trigger-build-and-test
 
 jobs:
   build_and_test:
-    needs: collect_commit_message
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: checkout repository
         uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-      - name: Install dependencies
+      - name: install dependencies
         run: npm install
-      - name: Build node app
+      - name: build node app
         run: npm run build
-      - name: Test node app
+      - name: test node app
         run: npm test
-      - name: Use commit message
-        env:
-          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
-        run: |
-          echo "Node will use commit message:[${commit_msg}]"
 
-  should_release:
-    needs: [collect_commit_message, build_and_test]
-    runs-on: ubuntu-latest
-    outputs:
-      release_version: ${{ steps.get-release-version.outputs.RELEASE_VERSION }}
-    steps:
-      - name: Use commit message
-        env:
-          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
-        run: |
-          echo "Release check will use commit message:[${commit_msg}]"
-      - name: Show release version
-        env:
-          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
-        run: |
-          echo ${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}'
-      - name: Obtain release version
-        id: get-release-version
-        env:
-          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
-        run: |
-          RELEASE_VERSION="$(echo ${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')"
-          echo "RELEASE_VERSION=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
-      - name: Use release version
-        env:
-          release_version: ${{steps.get-release-version.outputs.RELEASE_VERSION}}
-        run: |
-          echo "RELEASE is:[${release_version}]"
-          
+#  should_release:
+#    needs: [collect_commit_message, build_and_test]
+#    runs-on: ubuntu-latest
+#    outputs:
+#      release_version: ${{ steps.get-release-version.outputs.RELEASE_VERSION }}
+#    steps:
+#      - name: Use commit message
+#        env:
+#          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
+#        run: |
+#          echo "Release check will use commit message:[${commit_msg}]"
+#      - name: Show release version
+#        env:
+#          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
+#        run: |
+#          echo ${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}'
+#      - name: Obtain release version
+#        id: get-release-version
+#        env:
+#          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
+#        run: |
+#          RELEASE_VERSION="$(echo ${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')"
+#          echo "RELEASE_VERSION=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+#      - name: Use release version
+#        env:
+#          release_version: ${{steps.get-release-version.outputs.RELEASE_VERSION}}
+#        run: |
+#          echo "RELEASE is:[${release_version}]"
+#

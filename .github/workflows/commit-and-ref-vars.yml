@@ -1,6 +1,6 @@
 name: Commit & Store Variables
 
-on: [push]
+on: push
 
 jobs:
   collect_commit_message:
@@ -26,6 +26,10 @@ jobs:
           then
             echo "TAG_VERSION=$LATEST_TAG" >> "$GITHUB_ENV"
           fi
-      - name: check
+      - name: trigger workflow build & test
         run: |
-          echo "The COMMIT MESSAGE:[$COMMIT_MESSAGE] and RELEASE:[$RELEASE_VERSION] and TAG:[$TAG_VERSION]"
+          curl -X POST \
+                      -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                      -H "Accept: application/vnd.github.v3+json" \
+                      https://api.github.com/repos/mrupgradable/profile-jumper/dispatches \
+                      -d '{"event_type":"trigger-build-and-test"}'
