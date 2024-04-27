@@ -102,6 +102,11 @@ jobs:
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
           release_name: Release ${{ env.RELEASE_VERSION }}
+      - id: release-asset-vars
+        name: build release asset vars
+        run: |
+          echo "RELEASE_ASSET=profile-jumper-${RELEASE_VERSION}.zip" >> "$GITHUB_OUTPUT"
+          echo "RELEASE_ASSET_PATH=./deploy/profile-jumper-${RELEASE_VERSION}.zip" >> "$GITHUB_OUTPUT"
       - name: upload release app asset
         uses: actions/upload-release-asset@v1
         env:
@@ -109,5 +114,5 @@ jobs:
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: ./deploy/profile-jumper-0.0.8.zip
-          asset_name: profile-jumper-0.0.8.zip
+          asset_name: ${{ steps.release-asset-vars.outputs.RELEASE_ASSET }}
           asset_content_type: application/zip
