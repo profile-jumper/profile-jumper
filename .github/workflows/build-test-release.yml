@@ -19,7 +19,7 @@ jobs:
       - id: get-release-version
         name: extract accessible release
         env:
-          COMMIT_MESSAGE: ${{steps.get-commit-message.outputs.COMMIT_MESSAGE}}
+          COMMIT_MESSAGE: ${{ steps.get-commit-message.outputs.COMMIT_MESSAGE }}
         run: |
           RELEASE_COMMIT_PART=$(echo $COMMIT_MESSAGE | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')
           if [ "${#RELEASE_COMMIT_PART}" -ge 3 ] 
@@ -59,11 +59,11 @@ jobs:
     needs: [build_and_test, collect_vars]
     runs-on: ubuntu-latest
     env:
-      COMMIT_MESSAGE: ${{needs.collect_vars.outputs.COMMIT_MESSAGE}}
-      RELEASE_VERSION: ${{needs.collect_vars.outputs.RELEASE_VERSION}}
-      SHOULD_RELEASE: ${{needs.collect_vars.outputs.TAG_VERSION}}
+      COMMIT_MESSAGE: ${{ needs.collect_vars.outputs.COMMIT_MESSAGE }}
+      RELEASE_VERSION: ${{ needs.collect_vars.outputs.RELEASE_VERSION }}
+      TAG_VERSION: ${{ needs.collect_vars.outputs.TAG_VERSION }}
     outputs:
-      COMMIT_MESSAGE: ${{ steps.determine-should-release.outputs.SHOULD_RELEASE }}
+      SHOULD_RELEASE: ${{ steps.determine-should-release.outputs.SHOULD_RELEASE }}
     steps:
       - name: check vars
         run: |
@@ -72,9 +72,21 @@ jobs:
         name: determine whether to release
         run: |
           SHOULD_RELEASE=false
-          if [ -z "${#TAG_VERSION}" ] && [ "${#RELEASE_VERSION}" -ge 3 ]; then
+          if [ -z ${TAG_VERSION} ] && [ "${#RELEASE_VERSION}" -ge 3 ]; then
             echo "No tag -> but release!"
+            echo "SHOULD_RELEASE=true" >> "$GITHUB_OUTPUT"
+          elif [ "${#RELEASE_VERSION}" -ge 3 ] && [ "${#TAG_VERSION}" -ge 3 ] && [ $TAG_VERSION != $RELEASE_VERSION ] && [ $RELEASE_VERSION == $(printf "%s\n%s\n" "$RELEASE_VERSION" "$TAG_VERSION" | sort -V | tail -n 1) ] ;  then
+            echo "tag and release!"
             echo "SHOULD_RELEASE=true" >> "$GITHUB_OUTPUT"
           fi
 
-  # perform tagging, etc
+  perform_release:
+    needs: [should_release, collect_vars]
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: ${{ needs.collect_vars.outputs.RELEASE_VERSION }}
+      SHOULD_RELEASE: ${{ needs.should_release.outputs.SHOULD_RELEASE }}
+    steps:
+      - name: check vars
+        run: |
+          echo "the vars which will be used are commit:[$RELEASE_VERSION] release:[$RELEASE_VERSION] should release:[$SHOULD_RELEASE]"
