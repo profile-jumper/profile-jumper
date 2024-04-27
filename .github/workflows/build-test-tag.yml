@@ -81,12 +81,12 @@ jobs:
     env:
       RELEASE_VERSION: ${{ needs.collect_vars.outputs.RELEASE_VERSION }}
       SHOULD_TAG: ${{ needs.should_tag.outputs.SHOULD_TAG }}
+    if: ${{ env.SHOULD_TAG }}
     steps:
       - name: check vars
         run: |
           echo "should tag?:[$SHOULD_TAG] release:[$RELEASE_VERSION]"
       - name: create release
-        if: ${{ env.SHOULD_TAG }}
         run: |
           echo "going to tag a release! [$RELEASE_VERSION]"
 #        uses: actions/create-release@v1
