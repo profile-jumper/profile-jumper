@@ -2,7 +2,9 @@ name: Scheduled Token Sync
 
 on:
   schedule:
-    - cron: '40 16 * * *'
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+  
 
 jobs:
   sync_refresh_token:
@@ -13,6 +15,3 @@ jobs:
           clientId: ${{ secrets.G_CLIENT_ID }}
           clientSecret: ${{ secrets.G_CLIENT_SECRET }}
           refreshToken: ${{ secrets.G_REFRESH_TOKEN }}
-      - name: check var
-        run: |
-          echo "run!"
