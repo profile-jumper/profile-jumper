@@ -78,10 +78,10 @@ jobs:
   perform_tag:
     needs: [should_tag, collect_vars]
     runs-on: ubuntu-latest
+    if: ${{ needs.should_tag.outputs.SHOULD_TAG }}
     env:
       RELEASE_VERSION: ${{ needs.collect_vars.outputs.RELEASE_VERSION }}
       SHOULD_TAG: ${{ needs.should_tag.outputs.SHOULD_TAG }}
-    if: ${{ env.SHOULD_TAG }}
     steps:
       - name: check vars
         run: |
