@@ -2,12 +2,13 @@ name: release
 
 on:
   push:
-    tags: [ '*.*.*' ]
+    tags:
+      - '*'
 
 jobs:
   perform_release:
     runs-on: ubuntu-latest
     steps:
-      - name: just release
+      - name: just releasing (from tag)
         run: |
           echo "releasing..."
