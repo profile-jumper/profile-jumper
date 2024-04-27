@@ -74,7 +74,7 @@ jobs:
             echo "SHOULD_TAG=true" >> "$GITHUB_OUTPUT"
           fi
 
-  perform_tag:
+  perform_release:
     needs: [should_tag, collect_vars]
     runs-on: ubuntu-latest
     if: ${{ needs.should_tag.outputs.SHOULD_TAG }}
@@ -93,7 +93,7 @@ jobs:
       - name: build node app
         run: npm run build
       - name: create app archive
-        run: npm run build:dist
+        run: npm run build:archive
       - id: create-release
         name: create release
         uses: actions/create-release@v1.1.4
