@@ -80,18 +80,14 @@ jobs:
     if: ${{ needs.should_tag.outputs.SHOULD_TAG }}
     env:
       RELEASE_VERSION: ${{ needs.collect_vars.outputs.RELEASE_VERSION }}
-      SHOULD_TAG: ${{ needs.should_tag.outputs.SHOULD_TAG }}
     steps:
-      - name: check vars
-        run: |
-          echo "YES -> should release?! -> [$SHOULD_TAG]"
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: create tag
-        uses: rickstaa/action-create-tag@v1
+      - name: create release
+        uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag: ${{ env.RELEASE_VERSION }}
-          tag_exists_error: true
+          tag_name: ${{ env.RELEASE_VERSION }}
+          release_name: Release ${{ env.RELEASE_VERSION }}
