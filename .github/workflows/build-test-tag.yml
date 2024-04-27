@@ -82,6 +82,9 @@ jobs:
     env:
       RELEASE_VERSION: ${{ needs.collect_vars.outputs.RELEASE_VERSION }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: create tag
         uses: rickstaa/action-create-tag@v1
         env:
