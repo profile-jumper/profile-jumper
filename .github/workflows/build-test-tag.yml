@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - id: get-commit-message
         name: collect commit message
         run: |
