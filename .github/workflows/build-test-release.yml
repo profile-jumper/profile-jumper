@@ -61,12 +61,20 @@ jobs:
     env:
       COMMIT_MESSAGE: ${{needs.collect_vars.outputs.COMMIT_MESSAGE}}
       RELEASE_VERSION: ${{needs.collect_vars.outputs.RELEASE_VERSION}}
-      TAG_VERSION: ${{needs.collect_vars.outputs.TAG_VERSION}}
+      SHOULD_RELEASE: ${{needs.collect_vars.outputs.TAG_VERSION}}
+    outputs:
+      COMMIT_MESSAGE: ${{ steps.determine-should-release.outputs.SHOULD_RELEASE }}
     steps:
       - name: check vars
         run: |
           echo "the vars which will be used are commit:[$COMMIT_MESSAGE] release:[$RELEASE_VERSION] tag:[$TAG_VERSION]"
-      - name: determine new release
-        if: ${{ length(env.TAG_VERSION) == 0}} && ${{ length(env.RELEASE_VERSION) > 3}}
+      - id: determine-should-release
+        name: determine whether to release
         run: |
-          echo "there is no tag but release"
+          SHOULD_RELEASE=false
+          if [ -z "${#TAG_VERSION}" ] && [ "${#RELEASE_VERSION}" -ge 3 ]; then
+            echo "No tag -> but release!"
+            echo "SHOULD_RELEASE=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  # perform tagging, etc
