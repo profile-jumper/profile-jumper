@@ -1,6 +1,8 @@
 name: Build + Test & Tag
 
-on: push
+on:
+  push:
+    branches: [master]
 
 jobs:
   collect_vars:
