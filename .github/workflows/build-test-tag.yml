@@ -64,18 +64,13 @@ jobs:
     outputs:
       SHOULD_TAG: ${{ steps.determine-should-tag.outputs.SHOULD_TAG }}
     steps:
-      - name: check vars
-        run: |
-          echo "vars RELEASE_VERSION->[$RELEASE_VERSION] TAG_VERSION->[$TAG_VERSION]"
       - id: determine-should-tag
         name: determine whether to tag
         run: |
           SHOULD_TAG=false
           if [ -z ${TAG_VERSION} ] && [ "${#RELEASE_VERSION}" -ge 3 ]; then
-            echo "no tag - but release!"
             echo "SHOULD_TAG=true" >> "$GITHUB_OUTPUT"
           elif [ "${#RELEASE_VERSION}" -ge 3 ] && [ "${#TAG_VERSION}" -ge 3 ] && [ $TAG_VERSION != $RELEASE_VERSION ] && [ $RELEASE_VERSION == $(printf "%s\n%s\n" "$RELEASE_VERSION" "$TAG_VERSION" | sort -V | tail -n 1) ]; then
-            echo "release is greater than tag!"
             echo "SHOULD_TAG=true" >> "$GITHUB_OUTPUT"
           fi
 
