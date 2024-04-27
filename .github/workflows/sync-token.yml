@@ -9,11 +9,8 @@ jobs:
   sync_refresh_token:
     runs-on: ubuntu-latest
     steps:
-      - name: check repo
-        run: | 
-          echo "repo var are GITHUB_REPOSITORY->[${GITHUB_REPOSITORY}] GITHUB_ACTION_REPOSITORY->[${GITHUB_ACTION_REPOSITORY}]"
-#      - uses: cardinalby/google-api-fetch-token-action@v1
-#        with:
-#          clientId: ${{ secrets.G_CLIENT_ID }}
-#          clientSecret: ${{ secrets.G_CLIENT_SECRET }}
-#          refreshToken: ${{ secrets.G_REFRESH_TOKEN }}
+      - uses: cardinalby/google-api-fetch-token-action@v1
+        with:
+          clientId: ${{ secrets.G_CLIENT_ID }}
+          clientSecret: ${{ secrets.G_CLIENT_SECRET }}
+          refreshToken: ${{ secrets.G_REFRESH_TOKEN }}
