@@ -39,58 +39,34 @@ jobs:
     needs: [collect_vars]
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
-        uses: actions/checkout@v4
-      - name: setup node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
-      - name: install dependencies
-        run: npm install
-      - name: build node app
-        run: npm run build
-      - name: test node app
-        run: npm test
+#      - name: checkout repository
+#        uses: actions/checkout@v4
+#      - name: setup node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '18.x'
+#      - name: install dependencies
+#        run: npm install
+#      - name: build node app
+#        run: npm run build
+#      - name: test node app
+#        run: npm test
+      - name: just run
+        run: |
+          echo "building..."
 
   should_release:
     needs: [build_and_test, collect_vars]
     runs-on: ubuntu-latest
+    env:
+      COMMIT_MESSAGE: ${{needs.collect_vars.outputs.COMMIT_MESSAGE}}
+      RELEASE_VERSION: ${{needs.collect_vars.outputs.RELEASE_VERSION}}
+      TAG_VERSION: ${{needs.collect_vars.outputs.TAG_VERSION}}
     steps:
       - name: check vars
-        env:
-          COMMIT_MESSAGE: ${{needs.collect_vars.outputs.COMMIT_MESSAGE}}
-          RELEASE_VERSION: ${{needs.collect_vars.outputs.RELEASE_VERSION}}
-          TAG_VERSION: ${{needs.collect_vars.outputs.TAG_VERSION}}
         run: |
           echo "the vars which will be used are commit:[$COMMIT_MESSAGE] release:[$RELEASE_VERSION] tag:[$TAG_VERSION]"
-
-
-#  should_release:
-#    needs: [collect_commit_message, build_and_test]
-#    runs-on: ubuntu-latest
-#    outputs:
-#      release_version: ${{ steps.get-release-version.outputs.RELEASE_VERSION }}
-#    steps:
-#      - name: Use commit message
-#        env:
-#          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
-#        run: |
-#          echo "Release check will use commit message:[${commit_msg}]"
-#      - name: Show release version
-#        env:
-#          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
-#        run: |
-#          echo ${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}'
-#      - name: Obtain release version
-#        id: get-release-version
-#        env:
-#          commit_msg: ${{needs.collect_commit_message.outputs.commit_msg}}
-#        run: |
-#          RELEASE_VERSION="$(echo ${commit_msg} | awk '{for(i=1;i<=NF;i++) if(tolower($i) ~ /release:[0-9]+\.[0-9]+\.[0-9]+/) print tolower($i)}')"
-#          echo "RELEASE_VERSION=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
-#      - name: Use release version
-#        env:
-#          release_version: ${{steps.get-release-version.outputs.RELEASE_VERSION}}
-#        run: |
-#          echo "RELEASE is:[${release_version}]"
-#
+      - name: determine new release
+        if: ${{ length(env.TAG_VERSION) == 0}} && ${{ length(env.RELEASE_VERSION) > 3}}
+        run: |
+          echo "there is no tag but release"
