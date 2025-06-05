@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { BlockTime } from './BlockTime'
+import { BlockSwitch } from './BlockSwitch'
 
 import './BlockSetting.css'
 
@@ -12,30 +14,25 @@ export const BlockSetting = () => {
     }
 
     return (
-        <div className="BlockSetting">
-            <div className="timeRangeContainer">
-                <input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    className="timeInput"
-                />
-                <span className="toText">to</span>
-                <input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="timeInput"
-                />
-                <label className="switch">
-                    <input 
-                        type="checkbox" 
-                        checked={isEnabled}
-                        onChange={handleToggle}
+        <div className="BlockSettingWrapper">
+            <div className="BlockSetting">
+                <div className="timeRangeContainer">
+                    <BlockTime
+                        time={startTime}
+                        setTime={setStartTime}
                     />
-                    <span className="slider round"></span>
-                </label>
+                    <span className="toText">to</span>
+                    <BlockTime
+                        time={endTime}
+                        setTime={setEndTime}
+                    />
+                    <BlockSwitch
+                        isEnabled={isEnabled}
+                        handleToggle={handleToggle}
+                    />
+                </div>
             </div>
+            <div className="spacer-element"></div>
         </div>
     )
 }
