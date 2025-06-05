@@ -93,7 +93,6 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     if (onProfileUpdate && updated) className += ' Updating'
     if (isDragging) className += ' Dragging'
 
-    console.log('showBlockSetting:', showBlockSetting); // Debug line
     return (
         <div className='SettingProfileWrapper'>
             <div className='SettingProfileRow'>
