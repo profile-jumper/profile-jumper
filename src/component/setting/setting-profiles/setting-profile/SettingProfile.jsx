@@ -20,7 +20,6 @@ import './SettingProfileRow.css'
 export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onProfileUpdate, primaryInput, isDragging }) => {
     const [editProfileData, setEditProfileData] = useState(mapProfileToData(profile))
     const [updated, setUpdated] = useState(false)
-    // Default to hidden - only show when user clicks BlockIcon
     const [showBlockSetting, setShowBlockSetting] = useState(false)
     const [isEditingBlock, setIsEditingBlock] = useState(false)
 
@@ -47,23 +46,20 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }, [watch])
 
     useEffect(() => {
-        // Always update the profile when editProfileData changes and updated is true
         if (onProfileUpdate && updated) {
             const updateTimer = setTimeout(() => {
-                // Convert editProfileData to profile format and update
-                const profileToUpdate = mapValuesToProfile(editProfileData);
-                onProfileUpdate(profileToUpdate);
-                setUpdated(false);
-            }, isEditingBlock ? 0 : 2000); // Apply immediately when in editing mode, otherwise debounce
+                const profileToUpdate = mapValuesToProfile(editProfileData)
+                onProfileUpdate(profileToUpdate)
+                setUpdated(false)
+            }, isEditingBlock ? 0 : 2000) // Apply immediately when in editing mode, otherwise debounce
 
             return () => {
-                clearTimeout(updateTimer);
-            };
+                clearTimeout(updateTimer)
+            }
         }
-    }, [updated, editProfileData, onProfileUpdate, isEditingBlock]);
+    }, [updated, editProfileData, onProfileUpdate, isEditingBlock])
 
 
-    // will be valid 1st time round (onProfileAddHandler -> handleSubmit will re-validate)
     const isValid = isEntityEmpty(errors)
 
     const onProfileAddHandler = (event) => {
@@ -90,49 +86,41 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }
 
     const handleBlockToggle = () => {
-        // Capture current state to make decisions
-        const willShow = !showBlockSetting;
+        const willShow = !showBlockSetting
 
-        // Update visibility state
-        setShowBlockSetting(willShow);
+        setShowBlockSetting(willShow)
 
-        // Set editing state based on whether we're showing or hiding
         if (willShow) {
-            setIsEditingBlock(true); // Enter edit mode when showing
+            setIsEditingBlock(true)
         } else {
-            setIsEditingBlock(false); // Exit edit mode when hiding
-            setUpdated(true); // Trigger profile update
+            setIsEditingBlock(false)
+            setUpdated(true)
         }
     }
 
     const handleBlockSettingChange = (blockData) => {
-        // Use a ref to compare the current block data with the new block data
         const isSignificantChange = 
-            // Remove block entirely
             (blockData === null && editProfileData.block) || 
-            // Add block for the first time
             (blockData !== null && !editProfileData.block) ||
-            // Change block data
             (blockData !== null && editProfileData.block && 
              (blockData.startTime !== editProfileData.block.startTime || 
-              blockData.endTime !== editProfileData.block.endTime));
+              blockData.endTime !== editProfileData.block.endTime))
 
-        // Store the block data without triggering immediate updates
         setEditProfileData(epd => {
-            // If blockData is null, we remove the block property entirely
             if (blockData === null) {
-                const { block, ...restData } = epd;
-                return restData;
+                const { block, ...restData } = epd
+                return restData
             }
 
-            // Otherwise add the block data to the profile
-            return { ...epd, block: blockData };
-        });
+            return { ...epd, block: blockData }
+        })
 
-        // Only mark as updated if there's a significant change
         if (isSignificantChange) {
-            setUpdated(true);
+            setUpdated(true)
         }
+
+        setShowBlockSetting(true)
+        setIsEditingBlock(true)
     }
 
     let className = 'SettingProfile'
@@ -158,19 +146,16 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
                     <BlockIcon 
                         onBlock={handleBlockToggle} 
                         blockData={editProfileData.block}
-                        isEnabled={isEditingBlock}
                     />
                 ) : (
                     <div className="spacer-element"></div>
                 )}
             </div>
 
-            {/* Only show BlockSetting when showBlockSetting is true */}
-            { showBlockSetting && !primaryInput && 
+            { showBlockSetting && !primaryInput &&
                 <BlockSetting 
                     onBlockSettingChange={handleBlockSettingChange} 
                     initialBlockData={editProfileData.block || null}
-                    isEditing={isEditingBlock}
                 /> 
             }
         </div>

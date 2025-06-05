@@ -3,8 +3,6 @@ import { atomWithStorage } from 'jotai/utils'
 
 import { useDataContext } from '../../context/DataContext'
 
-// todo: HUGE HERE -> double check this...
-// Create custom storage to ensure proper handling of nested objects including the block property
 const customLocalStorage = {
   getItem: (key) => {
     const storedData = localStorage.getItem(key);
