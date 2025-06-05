@@ -11,6 +11,7 @@ export const BlockTime = ({ time, setTime, label }) => {
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 className="timeInput"
+                title="Set time for blocking"
             />
         </div>
     )

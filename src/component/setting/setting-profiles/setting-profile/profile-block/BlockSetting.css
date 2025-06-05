@@ -16,6 +16,13 @@
     border: 1px solid #7e0000;
 }
 
+.BlockSettingWrapper.Editing {
+    /* No border needed */
+    border-radius: 4px;
+    /* Lighter background for better UX */
+    background-color: rgba(255, 233, 233, 0.3);
+}
+
 .timeRangeContainer {
     display: flex;
     align-items: center;

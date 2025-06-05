@@ -13,14 +13,24 @@ export const mapProfileToData = (profile) => {
 
 export const mapValuesToProfile = (data) => {
     const id = data.id || generateUniqueId()
-    return { 
+
+    // Create base profile with all properties
+    const profile = { 
         id: id, 
         url: data.profileUrl, 
         title: data.profileTitle, 
         icon: data.profileIcon, 
-        iconColor: data.profileIconColor,
-        block: data.block
+        iconColor: data.profileIconColor
+        // Don't explicitly set block here
     }
+
+    // Only add block property if it exists
+    // We need to explicitly check for undefined to handle the case where block is null
+    if (data.hasOwnProperty('block')) {
+        profile.block = data.block;
+    }
+
+    return profile;
 }
 
 export const resetProfileData = () => {

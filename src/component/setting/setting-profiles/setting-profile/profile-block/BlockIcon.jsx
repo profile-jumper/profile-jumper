@@ -4,7 +4,8 @@ import { LibraryIcon } from '../../../../icon/LibraryIcon'
 import './BlockIcon.css'
 
     export const BlockIcon = ({onBlock, isEnabled = false, blockData}) => {
-    // Check if block data exists to determine if blocking is enabled
+    // Icon should be red when there's block data in the profile
+    // This means blocking is enabled for this profile
     const isBlockEnabled = blockData !== null && blockData !== undefined;
     const handleClick = (e) => {
         e.stopPropagation();
