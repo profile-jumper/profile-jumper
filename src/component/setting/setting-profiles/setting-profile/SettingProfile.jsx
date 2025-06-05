@@ -21,6 +21,7 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     const [editProfileData, setEditProfileData] = useState(mapProfileToData(profile))
     const [updated, setUpdated] = useState(false)
     const [showBlockSetting, setShowBlockSetting] = useState(false)
+    const [isEditingBlock, setIsEditingBlock] = useState(false)
 
     const { register, watch, reset, formState: { errors }, handleSubmit } = useForm({
         mode: 'onChange',
@@ -45,8 +46,8 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }, [watch])
 
     useEffect(() => {
-        // no update handler (means should not update)
-        if (onProfileUpdate && updated) {
+        // Only update the profile if not currently editing block settings
+        if (onProfileUpdate && updated && !isEditingBlock) {
             const updateTimer = setTimeout(() => {
                 onProfileUpdate(mapValuesToProfile(editProfileData))
                 setUpdated(false)
@@ -55,7 +56,7 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
                 clearTimeout(updateTimer)
             }
         }
-    }, [updated]);
+    }, [updated, isEditingBlock, editProfileData, onProfileUpdate]);
 
 
     // will be valid 1st time round (onProfileAddHandler -> handleSubmit will re-validate)
@@ -85,7 +86,28 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     }
 
     const handleBlockToggle = () => {
-        setShowBlockSetting(prev => !prev)
+        setShowBlockSetting(prev => {
+            // When opening block settings, set editing mode
+            if (!prev) {
+                setIsEditingBlock(true);
+            } else {
+                // When closing, always apply the current profile data
+                setIsEditingBlock(false);
+                // Force an update when closing block settings
+                onProfileUpdate?.(mapValuesToProfile(editProfileData));
+            }
+            return !prev;
+        })
+    }
+
+    const handleBlockSettingChange = (blockData) => {
+        // Store the block data without triggering immediate updates
+        setEditProfileData(epd => {
+            return { ...epd, block: blockData }
+        })
+
+        // Don't mark as updated yet - we'll do that when the block settings are closed
+        // This prevents the flickering issue
     }
 
     let className = 'SettingProfile'
@@ -108,13 +130,21 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
                 </div>
 
                 { !primaryInput ? (
-                    <BlockIcon onBlock={handleBlockToggle} />
+                    <BlockIcon 
+                        onBlock={handleBlockToggle} 
+                        blockData={editProfileData.block}
+                    />
                 ) : (
                     <div className="spacer-element"></div>
                 )}
             </div>
 
-            { showBlockSetting && !primaryInput && <BlockSetting /> }
+            { showBlockSetting && !primaryInput && 
+                <BlockSetting 
+                    onBlockSettingChange={handleBlockSettingChange} 
+                    initialBlockData={editProfileData.block}
+                /> 
+            }
         </div>
     )
 }

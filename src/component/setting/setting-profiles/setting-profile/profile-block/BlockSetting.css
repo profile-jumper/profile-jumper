@@ -5,6 +5,7 @@
     grid-template-columns: auto 48px;
     margin: 4px 1px;
     width: 100%;
+    z-index: 10; /* Ensure this stays on top */
 }
 
 .BlockSetting {
