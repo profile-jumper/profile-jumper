@@ -8,7 +8,7 @@ import { useOutsideClick } from '../../../../../hooks/useOutsideClick'
 
 import './SettingProfileIcon.css'
 
-export const SettingProfileIcon = ({ iconName, onColorChange, color = DEFAULT_ICON_COLOUR }) => {
+export const SettingProfileIcon = ({ iconName, onColorChange, color = DEFAULT_ICON_COLOUR, block }) => {
     const [showColorPicker, setShowColorPicker] = useState(false)
     const ref = useOutsideClick(() => setShowColorPicker(false))
 
@@ -19,10 +19,13 @@ export const SettingProfileIcon = ({ iconName, onColorChange, color = DEFAULT_IC
 
     const toggleColorPicker = () => setShowColorPicker(!showColorPicker)
 
+    // If profile has block property, override the color with grey at 50% transparency
+    const displayColor = block ? 'rgba(128, 128, 128, 0.5)' : color;
+
     return (
         <div className="SettingProfileIconWrapper">
             <ColorPicker visible={ showColorPicker } onColorChoose={ onColorChoose } defaultColor={ color } ref={ ref }/>
-            <LibraryIcon iconName={ iconName } color={ color } className="SettingProfileIcon" onClick={ toggleColorPicker }/>
+            <LibraryIcon iconName={ iconName } color={ displayColor } className="SettingProfileIcon" onClick={ toggleColorPicker }/>
         </div>
     )
 }
