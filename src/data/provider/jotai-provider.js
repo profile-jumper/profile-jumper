@@ -1,44 +1,48 @@
-import { useAtomValue, useSetAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 
 import { useDataContext } from '../../context/DataContext'
 
-const customLocalStorage = {
-    getItem: (key) => {
-        const storedData = localStorage.getItem(key);
-        if (storedData) {
-            try {
-                const parsed = JSON.parse(storedData);
-                return Array.isArray(parsed) ? parsed : [];
-            } catch (e) {
-                console.error('Error parsing data from localStorage:', e);
-                return [];
-            }
-        }
-        return [];
-    },
-    setItem: (key, value) => {
-        try {
-            localStorage.setItem(key, JSON.stringify(value));
-        } catch (e) {
-            console.error('Error saving data to localStorage:', e);
-        }
-    },
-    removeItem: (key) => {
-        localStorage.removeItem(key);
-    },
-};
-
-const profilesAtom = atomWithStorage('profiles', [], customLocalStorage)
+const profilesAtom = atom([])
 
 export const useProfiles = () => {
-    return useAtomValue(profilesAtom, {
+    const profiles = useAtomValue(profilesAtom, {
         store: useDataContext()
     })
+    const setProfiles = useSetAtom(profilesAtom, {
+        store: useDataContext()
+    })
+
+    useEffect(() => {
+        const loadProfiles = async () => {
+            try {
+                const result = await chrome.storage.local.get(['profiles'])
+                const storedProfiles = result.profiles || []
+                setProfiles(storedProfiles)
+            } catch (error) {
+                console.error('Error loading profiles from chrome.storage.local:', error)
+                setProfiles([])
+            }
+        }
+
+        loadProfiles()
+    }, [setProfiles])
+
+    return profiles
 }
 
 export const useSetProfiles = () => {
-    return useSetAtom(profilesAtom, {
+    const setProfiles = useSetAtom(profilesAtom, {
         store: useDataContext()
     })
+
+    return async (newProfiles) => {
+        try {
+            setProfiles(newProfiles)
+
+            await chrome.storage.local.set({profiles: newProfiles})
+        } catch (error) {
+            console.error('❌ Error saving profiles to chrome.storage.local:', error)
+        }
+    }
 }
