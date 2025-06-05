@@ -22,7 +22,7 @@ export const useBlockStatus = (blockData) => {
     } else {
       setIsBlocked(false)
     }
-  })
+  }, [blockData])
 
   return isBlocked
 }

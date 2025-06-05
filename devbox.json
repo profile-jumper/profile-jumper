@@ -9,8 +9,11 @@
   "shell": {
     "init_hook": [
       "alias code.run='npm run start'",
-      "alias code.build='npm run build'",
       "alias code.preview='npm run preview'",
+      "alias code.build='npm run build'",
+      "alias code.build.clean='npm run clean:build'",
+      "alias code.build.dist-with-maps='npm run build:dist-with-maps'",
+      "alias code.build.analyze='npm run build:analyze'",
       "alias deps.clean='./scripts/clean-deps.sh'",
       "alias deps.install='npm install'",
       "npm install"
