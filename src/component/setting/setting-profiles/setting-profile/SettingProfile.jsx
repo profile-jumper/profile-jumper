@@ -10,8 +10,10 @@ import { isEntityEmpty } from '../../../../utility/entity/entity-utility'
 import { mapProfileToData, mapValuesToProfile, resetProfileData } from '../../../../data/mapper/profile-data-mapper'
 import { ProfileHandle } from './profile-handle/ProfileHandle'
 import { findIconNameForUrl, findIconNameTitle } from '../../../../utility/icon/icon-lib-utility'
+import { BlockIcon } from './profile-block/BlockIcon'
 
 import './SettingProfile.css'
+import './SettingProfileWrapper.css'
 
 export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onProfileUpdate, primaryInput, isDragging }) => {
     const [editProfileData, setEditProfileData] = useState(mapProfileToData(profile))
@@ -85,15 +87,23 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
     if (isDragging) className += ' Dragging'
 
     return (
-        <div className={ className }>
-            { !primaryInput && <ProfileHandle/> }
+        <div className='SettingProfileWrapper'>
+            <div className={ className }>
+                { !primaryInput && <ProfileHandle/> }
 
-            <ProfileUrl register={ register } errors={ errors }/>
-            <ProfileTitle register={ register } errors={ errors }/>
-            <SettingProfileIcon iconName={ editProfileData.profileIcon } onColorChange={ onIconColorChange } color={ editProfileData?.profileIconColor }/>
+                <ProfileUrl register={ register } errors={ errors }/>
+                <ProfileTitle register={ register } errors={ errors }/>
+                <SettingProfileIcon iconName={ editProfileData.profileIcon } onColorChange={ onIconColorChange } color={ editProfileData?.profileIconColor }/>
 
-            { onProfileCreate && <ProfileAdd onCreate={ onProfileAddHandler } enabled={ isValid }/> }
-            { onProfileRemove && <ProfileRemove onRemove={ onProfileRemove }/> }
+                { onProfileCreate && <ProfileAdd onCreate={ onProfileAddHandler } enabled={ isValid }/> }
+                { onProfileRemove && <ProfileRemove onRemove={ onProfileRemove }/> }
+            </div>
+
+            { !primaryInput ? (
+                <BlockIcon onBlock={() => console.log('Block clicked for:', editProfileData.profileUrl)} />
+            ) : (
+                <div className="spacer-element"></div>
+            )}
         </div>
     )
 }

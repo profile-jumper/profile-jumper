@@ -1,0 +1,15 @@
+.BlockIconContainer {
+    cursor: pointer;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.BlockIcon {
+    width: 30px;
+    height: 30px;
+}
+
+.BlockIcon:hover {
+    opacity: 0.5;
+}
