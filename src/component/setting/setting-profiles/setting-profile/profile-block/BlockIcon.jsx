@@ -3,7 +3,7 @@ import { LibraryIcon } from '../../../../icon/LibraryIcon'
 
 import './BlockIcon.css'
 
-export const BlockIcon = ({onBlock}) => {
+export const BlockIcon = ({onBlock, isEnabled}) => {
     const handleClick = (e) => {
         e.stopPropagation();
         onBlock();
@@ -13,7 +13,7 @@ export const BlockIcon = ({onBlock}) => {
         <div className="BlockIconContainer" onClick={handleClick} title="Block website">
             <LibraryIcon 
                 iconName="SiAdblock"
-                color="lightgray"
+                color={isEnabled ? "red" : "lightgray"}
                 className="BlockIcon"
                 onClick={handleClick}
             />
