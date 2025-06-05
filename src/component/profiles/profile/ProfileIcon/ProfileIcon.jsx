@@ -1,15 +1,17 @@
 import React from 'react'
 
-import { DEFAULT_ICON_COLOUR } from '../../../../config/constants'
+import { BLOCKED_ICON_COLOUR, DEFAULT_ICON_COLOUR } from '../../../../config/constants'
 import { LibraryIcon } from '../../../icon/LibraryIcon'
+import { useBlockStatus } from '../../../../hooks/useBlockStatus'
 
 import './ProfileIcon.css'
 
-export const ProfileIcon = ({ iconName, color = DEFAULT_ICON_COLOUR, block }) => {
-    // If profile has block property, override the color with grey at 50% transparency
-    const displayColor = block ? 'rgba(128, 128, 128, 0.5)' : color;
+export const ProfileIcon = ({iconName, color = DEFAULT_ICON_COLOUR, block}) => {
+    const isBlocked = useBlockStatus(block)
+
+    const displayColor = (block && isBlocked) ? BLOCKED_ICON_COLOUR : color
 
     return (
-        <LibraryIcon iconName={ iconName } color={displayColor} className="ProfileIcon" />
-    );
+        <LibraryIcon iconName={iconName} color={displayColor} className="ProfileIcon"/>
+    )
 }
