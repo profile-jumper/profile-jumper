@@ -1,7 +1,7 @@
 .SettingProfileWrapper {
     position: relative;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     margin: 4px 1px;
 }
 

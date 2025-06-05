@@ -11,13 +11,16 @@ import { mapProfileToData, mapValuesToProfile, resetProfileData } from '../../..
 import { ProfileHandle } from './profile-handle/ProfileHandle'
 import { findIconNameForUrl, findIconNameTitle } from '../../../../utility/icon/icon-lib-utility'
 import { BlockIcon } from './profile-block/BlockIcon'
+import { BlockSetting } from './profile-block/BlockSetting'
 
 import './SettingProfile.css'
 import './SettingProfileWrapper.css'
+import './SettingProfileRow.css'
 
 export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onProfileUpdate, primaryInput, isDragging }) => {
     const [editProfileData, setEditProfileData] = useState(mapProfileToData(profile))
     const [updated, setUpdated] = useState(false)
+    const [showBlockSetting, setShowBlockSetting] = useState(false)
 
     const { register, watch, reset, formState: { errors }, handleSubmit } = useForm({
         mode: 'onChange',
@@ -81,29 +84,38 @@ export const SettingProfile = ({ profile, onProfileCreate, onProfileRemove, onPr
         })
     }
 
+    const handleBlockToggle = () => {
+        setShowBlockSetting(prev => !prev)
+    }
+
     let className = 'SettingProfile'
     if (primaryInput) className += ' PrimaryInput'
     if (onProfileUpdate && updated) className += ' Updating'
     if (isDragging) className += ' Dragging'
 
+    console.log('showBlockSetting:', showBlockSetting); // Debug line
     return (
         <div className='SettingProfileWrapper'>
-            <div className={ className }>
-                { !primaryInput && <ProfileHandle/> }
+            <div className='SettingProfileRow'>
+                <div className={ className }>
+                    { !primaryInput && <ProfileHandle/> }
 
-                <ProfileUrl register={ register } errors={ errors }/>
-                <ProfileTitle register={ register } errors={ errors }/>
-                <SettingProfileIcon iconName={ editProfileData.profileIcon } onColorChange={ onIconColorChange } color={ editProfileData?.profileIconColor }/>
+                    <ProfileUrl register={ register } errors={ errors }/>
+                    <ProfileTitle register={ register } errors={ errors }/>
+                    <SettingProfileIcon iconName={ editProfileData.profileIcon } onColorChange={ onIconColorChange } color={ editProfileData?.profileIconColor }/>
 
-                { onProfileCreate && <ProfileAdd onCreate={ onProfileAddHandler } enabled={ isValid }/> }
-                { onProfileRemove && <ProfileRemove onRemove={ onProfileRemove }/> }
+                    { onProfileCreate && <ProfileAdd onCreate={ onProfileAddHandler } enabled={ isValid }/> }
+                    { onProfileRemove && <ProfileRemove onRemove={ onProfileRemove }/> }
+                </div>
+
+                { !primaryInput ? (
+                    <BlockIcon onBlock={handleBlockToggle} />
+                ) : (
+                    <div className="spacer-element"></div>
+                )}
             </div>
 
-            { !primaryInput ? (
-                <BlockIcon onBlock={() => console.log('Block clicked for:', editProfileData.profileUrl)} />
-            ) : (
-                <div className="spacer-element"></div>
-            )}
+            { showBlockSetting && !primaryInput && <BlockSetting /> }
         </div>
     )
 }

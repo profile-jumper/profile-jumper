@@ -1,0 +1,10 @@
+.BlockSetting {
+    background-color: red;
+    padding: 10px;
+    margin-top: 4px;
+    border-radius: 4px;
+    width: 100%;
+    min-height: 50px;
+    color: white;
+    font-weight: bold;
+}
