@@ -13,7 +13,7 @@ export const BuyMeACoffee = () => {
         rel="noopener noreferrer"
         title="Buy Me A Coffee"
       >
-        <img src={BuyMeACoffeeLogo} alt="Buy Me A Coffee!" className="CoffeeCup"/>
+        <img src={BuyMeACoffeeLogo} alt="Buy Me A Coffee" className="CoffeeCup"/>
       </a>
     </div>
   )
