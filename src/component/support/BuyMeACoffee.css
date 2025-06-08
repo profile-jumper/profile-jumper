@@ -5,13 +5,18 @@
   padding: 10px;
 }
 
-.BuyMeACoffee img {
+.BuyMeACoffee a {
+  display: inline-block;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
-.BuyMeACoffee img:hover {
+.BuyMeACoffee a:hover {
   transform: scale(1.05);
+}
+
+.BuyMeACoffee img {
+  display: block;
 }
 
 .CoffeeCup {
